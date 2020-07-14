@@ -1,7 +1,9 @@
 \documentclass[12pt, a4paper]{report}
 \usepackage{lipsum}
-
 \usepackage{indentfirst} %\section or \chapter by default don't indent the first paragraph for some absurd reason!
+
+\usepackage[style=abnt]{biblatex}
+\addbibresource{references.bib}        % Seus arquivos de
 
 \begin{document}
 \begin{titlepage}
@@ -14,7 +16,7 @@
          Subtítulo
              
         \vspace{1.5cm}
-        \LARGE
+
         Relatório Final de \\
         pesquisa de Iniciação Científica
  
@@ -34,30 +36,37 @@
     \end{center}
  \end{titlepage}
  \Large
-\chapter[]{Resumo}
+
+ \tableofcontents
+
+\chapter{Resumo}
 \lipsum[10]
 
-\chapter[]{Introdução}
+\chapter{Introdução}
 
 Revisão bibliográfica: Sistemas médicos, sistemas embarcados, sensores,
-comunicação embarcada, sistemas em tempo real. \\
-Livros que podem ajudam: Sistemas Operacionais, Manuais da TI, Making Embedded Systems e 
-Understanding Linux Kernel.\\
+comunicação embarcada, sistemas em tempo real. 
 
-Justificativa: meme\\
+Livros que podem ajudam: Sistemas Operacionais, Manuais da TI, Making Embedded Systems e 
+Understanding Linux Kernel.
+
+Justificativa: meme
 
 Objetivos: Adicionar às pesquisas de processamento de sinais
 do laboratório e fazer uma interface similar à estetoscópios só que barato
 
-\chapter[]{MATERIAL E MÉTODOS}
+\chapter{MATERIAL E MÉTODOS}
 Falar um pouco sobre as plaquinhas usadas, software utilizado, como os sensores são feitos pra encaixar etc e a resposta que se deve esperar deles.
 
-\chapter[]{RESULTADOS E DISCUSSÃO}
-Avaliar a melhora do sistema e o que eu aprendi
+\chapter{RESULTADOS E DISCUSSÃO}
+\cite{MR2373353}.
+\cite{einstein}
 
-\chapter[]{CONCLUSÕES}
+
+\chapter{CONCLUSÕES}
 O que deve ser feito após isso
 
-\chapter[]{REFERÊNCIAS}
-Listar todas as referências que eu utilizei
+\addcontentsline{toc}{chapter}{REFERÊNCIAS} 
+\printbibliography
+
 \end{document}
