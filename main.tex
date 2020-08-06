@@ -48,12 +48,11 @@
  \tableofcontents
 
 \chapter{Resumo}
-Nesse projeto foi realizado uma revisão bibliográfica acerca das tecnologias como \textit{Bluetooth Low Energy} e Sistemas Operacionais e protocolos de comunicação entre periféricos eletrônicos, a seguir, um aprendizado diante das ferramentas disponíveis, como ambientes de programação de \textit{software} e \textit{firmware} integrados e diversos softwares gráficos e de linha de comando. Após essa asserção, foram iniciados trabalhos para a ampliação de um sistema de captação de sinais respiratórios, originalmente construído por \cite{willian}. A ampliação do sistema contava, mas não somente, com a correção de bugs e aprimoramentos do sistema, inserção de interface para sensores de posicionamento espacial, introdução de um sistema de inicialização externa da aquisição via botão físico e melhoramento do sistema de coleta de dados.
 
+O diagnóstico prematuro correto de enfermidades respiratórias pode representar uma redução significativa de mortes. Nesse sentido, são utilizados métodos de asculta pulmonar, realizada rotineiramente por médicos treinados. Um ponto forte é o baixo custo, não possuindo necessidade de equipamentos proibitivamente caros e não invasivo, pois não exige movimentação excessiva de pacientes acamados. No entanto, o examinador pode ser impedido de executar o exame com acurácia devido à inexperiência e capacidade auditiva. Assim, surgiram estetoscópios eletrônicos de baixo custo, que podem captar e preparar sinais que podem ser processados via técnicas de análise, retirando a subjetividade e democratizando o acesso ao exame. Esse trabalho propõe o aprimoramento e expansão de um sistema de aquisição de sons respiratórios produzidos no LCS - UFSC. O módulo\cite{willian}, - que antes contava com receptor e transmissor \textit{Bluetooth 5.0}, e um periférico de aquisição de sinais analógicos - foi aprimorado com uma nova interface para sensor de posicionamento espacial, de forma a auxiliar o leque de informações disponíveis para processamento e próximas pesquisas nessa área. Pesquisas recentes sobre sons pulmonares sugerem que o exame pode ser usado para detecção antecipada de doenças como COVID-19 \cite{Huang}, tornando estetoscópios eletrônicos ainda mais pertinentes pelas vantagens supracitadas.
 
 
 Palavras-chave: Instrumentação médica. Sistema respiratório. Sons respiratórios. Estetoscópio Eletrônico. Processamento Digital de Sinais.
-
 
 \chapter{Introdução}
 
@@ -67,7 +66,7 @@ Os principais conceitos a serem revisados são os de Sistemas Operacionais em Te
 
 Protocolos de Comunicação são, como definidos por \cite{morislav} como um conjunto de regras que governam como mensagens deverão ser trocadas por computadores. É preciso entender, em especial, como funcionam os protocolos de comunicação \textit{serial}, \textit{i\textsuperscript{2}c} e \textit{SPI}, sendo que os dois últimos são utilizados para a obter os dados dos sensores inseridos no sistema.
 
-\cite{taoe} define os dois protocolos de maneira extremamente semelhante, mas cita diferenças claras como a velocidade de transmissão e a comunicação totalmente bidirecional (full-duplex) na \textit{SPI} e a simplicidade e fácil adesão de novos dispositivos no \textit{bus} que é essencialmente a comunicação \textit{i\textsuperscript{2}c}, permitindo fácil extensão de mais dispositivos num mesmo \textit{bus}. Assim, possuímos dois tipos de comunicação bem suportada com parâmetros bem definidos e amplamente utilizadas para todo tipo de comunicação eletrônica.
+\cite{taoe} define os dois protocolos de maneira extremamente semelhante, mas cita diferenças claras como a velocidade de transmissão e a comunicação totalmente bidirecional (full-duplex) na \textit{SPI} e a simplicidade e fácil adesão de novos dispositivos no \textit{bus} (faixa de cabos que transmite informação entre vários dispostivos) que é essencialmente a comunicação \textit{i\textsuperscript{2}c}, permitindo fácil extensão de mais dispositivos num mesmo \textit{bus}. Assim, possuímos dois tipos de comunicação bem suportada com parâmetros bem definidos e amplamente utilizadas para todo tipo de comunicação eletrônica.
 
 
 
@@ -75,22 +74,27 @@ Protocolos de Comunicação são, como definidos por \cite{morislav} como um con
 \label{sec:hardware}
 \section{Características de módulos microcontrolados com capacidades \textit{BLE 5.0}}
 
+A tecnologia \textit{Bluetooth 5.0} é uma tecnologia definida por um grupo de trabalho denominado \textit{Bluetooth Special Interest Group}. Nesse, se define um padrão de comunicação sem fio entre dois - ou mais - dispositivos numa banda de frequência normalmente utilizada para fins industriais, científicos e médicos. Originalmente, o Bluetooth foi criado para estabelecer um tipo de comunicação simples, serial, que já existia na forma de conexão via cabo entre dispositivos.
+
 De acordo com \cite{omre}, os principais pontos que fazem com que \textit{Bluetooth} sejam uma boa escolha meios médicos são: interoperabilidade, baixo consumo, customização de formato de transmissão (pacote), compatibilidade eletromagnética (equipamentos médicos coexistem, não podendo inteferir negativamente uns com os outros), segurança na transmissão para proteger confidencialidade da informação e hub de sensores (diversos equipamentos médicos precisam ser atualizados em tempo real via internet para fins de telemedicina). 
 
+A necessidade de se utilizar uma tecnologia de ponta nesse projeto surge da grande quantidade de dados envolvidos na transferência de sons respiratórios. Na especificação do \textit{BLE} ou \textit{Bluetooth Low Energy}, um padrão de Bluetooth utilizado pelo baixo consumo, o \textit{throughput} é limitada em 2mpbs, porém, dado um \textit{overhead} utilizado por headers e dependente do hardware onde o protocolo está sendo executado, a velocidade efetiva de transmissão é geralmente menor do que a especificada.
+ 
 Também é um protocolo aberto para implementação, realizado pelas principais empresas de tecnologia mundiais, fomentando os pontos de interoperabilidade de equipamentos e segurança. 
 
-O sistema original foi criado usando uma plataforma embarcada da \textit{Texas Instruments}\textsuperscript{\textregistered} codenome \texttt{LAUCHPAD-XL} contendo o chip \textit{CC2640R2}, e suportando a tecnologia \textit{BLE 5.0}, \textit{Bluetooth Low Energy 5.0}. Essa tecnologia possibilita uma alta taxa de transmissão, fazendo dela ideal para aplicações médicas que requerem grande \textit{throughput} de dados.
+O sistema original foi criado usando uma plataforma embarcada da \textit{Texas Instruments}\textsuperscript{\textregistered} codenome \texttt{LAUCHPAD-XL} contendo o chip \textit{CC2640R2}, e suportando a tecnologia \textit{BLE 5.0}, \textit{Bluetooth Low Energy 5.0}. A empresa também nos disponibiliza, como parte do pacote onde a plataforma está inserida, diversos \textit{softwares} e \textit{firmwares} que podem ser utilizados para programar nossas próprias aplicações utilizando a tecnologia Bluetooth. O kit de desenvolvimento utilizado foi o \textit{SDK 1.50.00.58}. Os novos SDK também incluem as ferramentas necessárias para realização do projeto, mas nos momentos iniciais a aclimação com as novas ferramentas se mostrou muito trabalhosa para o porte de todo o código que já havia sido escrito.
 
-%TODO: Inserir aqui diagrama pra CC2640R2
+\begin{center}
+    \includegraphics[width=2.8\textwidth]{soc.jpg}\\
+    \footnotesize{Fonte: Texas Instruments\textsuperscript{\textregistered}}
+\end{center}
 
-Observando o esquemático de blocos do \textit{SoC}, vemos que o mesmo conta com um processador ARM Cortex-M3 e ARM Cortex-M0. O primeiro serve de processador de propósito geral, e é extendido para os pinos de entrada e saída (\textit{I/O}) de cada placa. O segundo é um processador de propósito específico que contém código que controla o circuito de radiofrequência (\textit{RF}) responsável pela implementação do protocolo \textit{Bluetooth} da placa.
+Observando o esquemático de blocos do \textit{SoC}, vemos que o mesmo conta com um processador ARM Cortex-M3 e ARM Cortex-M0. O primeiro serve de processador de propósito geral, e é extendido para os pinos de entrada e saída (\textit{I/O}) de cada placa. O segundo é um processador de propósito específico que contém código que controla o circuito de radiofrequência (\textit{RF}) responsável pela implementação do protocolo \textit{Bluetooth} da placa. 
 
-Fazemos uso, então, do \textit{Cortex-M3} para acessar e obter dados dos sensores ou periféricos. Estes, por sua vez, são enviados via para a segunda \textit{CC2640R2} usando a API da \textit{TI}.
+Existe um protocolo de comunicação não-acessível pelo usuário da placa entre os dois processadores que serve para aquisição e envio de mensagens pelo Bluetooth. Fazemos uso, então, do \textit{Cortex-M3} para acessar e obter dados dos sensores ou periféricos. Estes, por sua vez, são enviados via para a segunda \textit{CC2640R2} usando a API da \textit{TI}.
  %TODO: Referência do documento da API da TI
 
-O protocolo de transmissão usado é uma tecnologia que define os requerimentos de \textit{Bluetooth} necessários em dois dispositivos quaisquer. Nesse caso, é utilizado o \textit{RFCOMM}. Esse protocolo essencialmente emula uma porta serial, e define uma série de procedimentos necessários para interoperabilidade que são coletivamente chamados de \textit{Serial Port Profile}.
-
-A placa possuí um bom suporte de software e firmware, possibilitado e mantido pela empresa que a produz. Algumas limitações de hardware ainda são realidade para essa tecnologia, fato que, por extensão, limita a escolha de placas de desenvolvimento no mercado. A tecnologia \textit{BLE 5.0}, por mais que o protocolo da presente versão tenha sido homologado em 2016, ainda não é totalmente adotada e nem amplamente utilizada por vários dispositivos. Visto que o ecossistema do projeto já estava baseado na \texttt{LAUCHPAD-XL}, o projeto ali se deu prosseguimento.
+ Algumas limitações de hardware ainda são realidade para essa tecnologia, fato que, por extensão, limita a escolha de placas de desenvolvimento no mercado. A tecnologia \textit{BLE 5.0}, por mais que o protocolo da presente versão tenha sido homologado em 2016, ainda não é totalmente adotada e nem amplamente utilizada por vários dispositivos. Visto que o ecossistema do projeto já estava baseado na \texttt{LAUCHPAD-XL}, o projeto ali se deu prosseguimento.
 
 
 
@@ -108,16 +112,17 @@ A empresa também disponibiliza exemplos de aplicação que podem ser extendidos
 
 Esse exemplo foi compilado, estudado e analisado, visando compreendimento base do Sistema Operacional. O projeto também usa esse exemplo de aplicação como projeto-base.
 
-\section{Estudo do Sistema de transmissão por \cite{willian}}
+\section{Desenvolvimento de firmware para testes de sinais simulados de aúdio}
 
 A partir disso, foram iniciados estudos sobre como o sistema de aquisição e transmissão criado por \cite{willian}. Durante esse passo, notamos as limitações promovidas pela construção e configuração padrão do hardware da plataforma \textit{CC2640R2}. 
 
-O principal esforço se deu a trabalhar dentro de limitações extremas de memória volátil. Com apenas 8\texttt{kb} de memória do tipo volátil, sendo que o Sistema Operacional em uso pode ocupar cerca de $25\%$ desse valor, fazendo com que inserção de rotinas novas necessitem de cuidado para evitar possíveis \textit{overflows}, ou estouro de pilha.
+O principal esforço se deu a trabalhar dentro de limitações extremas de memória volátil (memória não persistente). Com apenas 8\texttt{kb} de memória do tipo volátil, sendo que o Sistema Operacional em uso pode ocupar cerca de $25\%$ desse valor, fazendo com que inserção de rotinas novas necessitem de cuidado para evitar possíveis \textit{overflows}, ou estouro de memória por sua insuficiência.
 
 O sistema conta com um \textit{ADC} de 16 \textit{bits} de dois canais modelo \textit{LTC1867LCGN} da \textit{Linear Devices\textsuperscript{\textregistered}}. Este se conecta a uma front-end desenvolvida por [trabalho que desenvolveu a frontend]
 
 \begin{center}
-    \includegraphics[width=0.7\textwidth]{estetoscopio.jpg}
+    \includegraphics[width=0.7\textwidth]{estetoscopio.jpg}\\
+    \footnotesize{Fonte: \cite{willian}}
 \end{center}
 
 O projeto pode ser utilizado para se obter sinais de  com pouca interferência e distúrbio para pacientes. Os sinais podem, \textit{a posteriori} ser processados e analisados por técnicas específicas de processamento de sinal. A interface também pode ser vista como um estetoscópio eletrônico de baixo custo e performance comparável aos dispositivos existentes no mercado, que são de código fechado e valor proibitivo para uma grande parcela de possíveis aplicações.
@@ -126,36 +131,78 @@ A comunicação \textit{ADC} \textrightarrow \textit{CC2640} é realizada pelo p
 
 %TODO: Inserir aqui figura (na real montar um tabular que fica mais limpo) das configurações da SPI. 12MHz e tal e tal
 
+    \begin{table}[]
+        \centering
+            \begin{tabular}{|l|l|}
+            \hline
+            \textbf{Parâmetro}                    & \textbf{Valor} \\ \hline
+            Modo de comunicação CC2640R2 & Mestre \\ \hline
+            Modo de comunicação LTC1867L & Escravo \\ \hline
+            Taxa do clock                & 12MHz \\ \hline
+            Tamanho da Amostra           & 16 bits \\ \hline
+            CPOL (Clock Polarity)        & 0 \\ \hline
+            CPHA (Clock Phase)           & 0 \\ \hline
+            Modo                         & Callback \\ \hline
+        \end{tabular}
+    \end{table}
+            
 Foram corrigidos avisos gerados por conversões digitais implícitas que existiam nos valores amostrados do \textit{ADC} quando levadas ao buffer de transmissão utilizado pelo projeto.
 
-O projeto original também conta com um aplicativo com Windows NT como sistema host, que capturava os pacotes transmitidos via Bluetooth pelo \textit{Client} do sistema por emulação de porta serial via USB. O primeiro problema foi a falta de documentação sobre o projeto, que não provinha de instruções de compilação. As bibliotecas utilizadas no projeto também eram de versões antigas, com diversos problemas de interoperabilidade. 
+Para disparar a aquisição desse periférico é utilizado um relógio em modo periódico que faz a requisição dos sinais a cada $100\mu s$.
 
-Ultrapassando o problema de compilação do projeto, percebemos que o mesmo utilizada a \textit{API} do próprio sistema Windows NT. O código utilizado para acesso ao periférico da porta serial emulada sobre USB era datado, não se comportando bem em novas versões do sistema Windows NT. Decidimos então criar um novo programa que capture as informações de quaisquer porta serial, com a necessidade de fácil manutenção e pouca modificação entre sistemas operacionais host. Dessa forma, foi escrito um programa na linguagem de programação Python que obtém os dados da porta serial e os salva para pós-processamento, que mostrou bom desempenho.
-
-
-Nessa programa também foi realizado um algoritmo simples de \textit{poooling} ou espera para inicialização remota da gravação. Se necessário, métodos de pós-processamento podem ser programados de maneira não intrusiva no programa.
+O sistema foi então testado com sinais alternados tanto gerados pelo próprio microcontrolador quanto externos e obteve resposta satisfatória.
 
 
-\section{Extensão e aprimoramento do Sistema Desenvolvido}
+\section{Desenvolvimento de Aplicativo para Notebook}
 
-Uma das propostas concebidas pelo orientador foi a integração de um acelerômetro e giroscópio, de forma a obter dados de posição espacial do tórax do paciente. A partir dessa proposta foi elaborado uma interface parar aquisição de dados de pequenos sensores que contém tanto acelerômetro quando giroscópio.
+O projeto original também conta com um aplicativo para Notebooks e Computadores Windows, que captura os pacotes transmitidos via Bluetooth pelo \textit{Client} do sistema por emulação de porta serial via USB. O primeiro problema foi a falta de documentação sobre o projeto, que não provinha de instruções de compilação. As bibliotecas utilizadas no projeto também eram de versões antigas, com diversos problemas de interoperabilidade. 
 
+Ultrapassando o problema de compilação do projeto, percebemos que o mesmo utilizada a \textit{API} do próprio sistema Windows NT. O código utilizado para acesso ao periférico da porta serial emulada sobre USB era datado, não se comportando bem em novas versões do sistema Windows NT. Decidimos então criar um novo programa que capture as informações de quaisquer porta serial, com a necessidade de fácil manutenção e pouca modificação entre sistemas operacionais host. Dessa forma, foi escrito um programa na linguagem de programação Python que obtém os dados da porta serial e os salva para pós-processamento, que mostrou bom desempenho. Se necessário, métodos de pós-processamento podem ser programados de maneira não obtusa no programa, gerando os dados de maneira rápida.
+
+\subsection{Código para atendimento de interrupção externa}
+
+Considerando que acessar o equipamento notebook que pode estar a alguns metros de distância do conjunto paciente, examinador e equipamento Bluetooth, surgiu a necessidade de um botão que dispare o programa de computador supracitado. 
+
+Uma modificação simples foi um algoritmo de \textit{poooling} - ou espera - de inicialização remota da gravação, em conjunto com uma modificação que não custou a já escassa memória de dados das placas. Aumentando o conforto do uso em pacientes com dificuldade de locomoção. 
+
+Quando um botão é pressionado no Client, o mesmo envia uma curta mensagem de 8 bytes para o Server. O Server é conectado via cabo USB ao Notebook. Quando o Notebook detecta essa mensagem, ele envia uma mensagem ao Client pelo Server para que se comece a inicialização da aquisição e ao mesmo tempo começa a gravação dos dados recebidos pelo Server. 
+
+\section{Testes e aprimoramento do Sistema Desenvolvido}
+
+Uma das propostas concebidas pelo orientador foi a integração de um acelerômetro e giroscópio, dispositivo que mede aceleração e posição absoluta, de forma a obter dados espaciais do tórax do paciente. A partir dessa proposta foi elaborado uma interface parar aquisição de dados de pequenos sensores que contém tanto acelerômetro quando giroscópio.
 
 O periférico de giroscópio e acelerômetro escolhido foi o \textit{MPU6050}. Seu baixo custo, alta precisão e plena disponibilidade oferecem um bom dispositivo. O \textit{MPU6050} é conta com 6 \textit{ADCs}, cada um de 16 \textit{bits}. Cada um desses \textit{ADCs} é responsável pela digitalização de um eixo do acelerômetro ou do giroscópio embarcados na \textit{breakout board}. Também oferece um filtro passa-baixas digitalmente programável, descartando a necessidade de pós-processamento e baixo consumo (em torno de \textit{3.6mA} de acordo com a fabricante). 
 
-Nossa expansão incluiu o módulo de acelerômetro e giroscópio \textit{MPU6050}, o que possibilita a captação de sinais de posição em três dimensões com \textit{n}-graus de liberdade, onde \textit{n} é o número de sensores acelerômetro e giroscópio disponíveis no sistema. Claramente existe um limite no número de sensores dado as limitações de memória e hardware disponíveis no sistema. Em específico, o MPU6050 possui um sistema simples de endereçamento, que permite endereçar até dois chips usando apenas um periférico \textit{i\textsuperscript{2}c}. Como a plataforma atual possui dois desses periférico, é possível o endereçamento de até 4 combos de sensores de posição espacial.
+Nossa expansão incluiu o módulo de acelerômetro e giroscópio \textit{MPU6050}, o que possibilita a captação de sinais de posição em três dimensões com \textit{n}-graus de liberdade, onde \textit{n} é o número de sensores acelerômetro e giroscópio disponíveis no sistema. Claramente existe um limite no número de sensores dado as limitações de memória e hardware disponíveis no sistema. Em específico, o MPU6050 possui um sistema simples de endereçamento, que permite endereçar até dois chips usando apenas um periférico \textit{i\textsuperscript{2}c}. Como a plataforma atual possui dois desses periférico, é possível o endereçamento de até 4 combos de sensores de posição espacial. Qualquer pino pode ser reprogramado para funcionar como esse protocolo.
+
+Abaixo são listados os parâmetros de configuração \textit{i\textsuperscript{2}c}.
+
+    \begin{table}[]
+        \centering
+        \begin{tabular}{|l|l|}
+            \hline
+            \textbf{Parâmetro}                    & \textbf{Valor} \\ \hline
+            Modo de comunicação CC2640R2 & Mestre \\ \hline
+            Modo de comunicação MPU6050  & Escravo \\ \hline
+            Taxa do clock                & 400kHz \\ \hline
+            Tamanho da Amostra           & 16 bits \\ \hline
+        \end{tabular}
+    \end{table}
+    
 
 A metodologia de programação desse periférico se deu no desenvolvimento de um \hyperref[sec:driver]{\textit{driver}} do mesmo, que abstraí rotinas de baixo nível do periférico via uma \textit{API}. Como no programa escrito em Python para recebimento dos dados pela serial, optamos por uma forte filosofia de portabilidade, escrevendo a biblioteca de uma maneira portável e agnóstica à plataforma, podendo ser utilizada em outros microcontroladores e até outros projetos.
 
+A taxa de aquisição desse sensor foi programada em função da taxa de aquisição do \textit{ADC}. A cada disparo do relógio, existe uma simples lógica de contador que divide esse clock afim de realizar a aquisição do acelerômetro + giroscópio. Dessa forma, a taxa de aquisição do acelerômetro + giroscópio nunca pode ser maior do que a do \textit{ADC}. De qualquer forma a taxa de 12MHz do \textit{ADC} é maior que a taxa de 1KHz do acelerômetro e 8KHz do giroscópio.
+
 \vspace{0.5cm}
 \begin{center}
-    \includegraphics[width=0.9\textwidth]{esquematico_novo.png}
-    
+    \includegraphics[width=0.9\textwidth]{esquematico_novo.png}\\
+    \footnotesize{Fonte: O autor.}
 \end{center}
     %\includepdf[pages=-,pagecommand={},width=0.2\textwidth]{esquematico_novo.pdf}
 
 \chapter{RESULTADOS E DISCUSSÃO}
-As condições para realização dos testes não foi propícia devido aos eventos externos ocorridos no ano de 2020, impossibilitando tanto contato quanto acesso aos equipamentos e profissionais necessários para continuar os trabalhos normalmente, dadas as questões sanitárias. De qualquer forma, houveram testes regulares em todas as partes do projeto, o que garente o funcionamento em ambiente de desenvolvimento.
+As condições para realização dos testes não foi propícia devido aos eventos externos ocorridos no ano de 2020, impossibilitando tanto contato quanto acesso aos equipamentos e profissionais necessários para continuar os trabalhos normalmente, dadas as questões sanitárias. De qualquer forma, houveram testes regulares em todas as partes do projeto, o que garante o funcionamento em ambiente de desenvolvimento.
  
 Ademais, a natureza de dispositivos embarcados é de baixo consumo e baixo processamento. Logo, a maior dificuldade em todas as etapas do projeto foi fazer uma alta manutenção de RAM (memória volátil). Ainda sim, a plataforma escolhida pode permitir comutações de código entre processadores e famílias de dispositivos, permitindo fácil portabilidade para microcontroladores com maior capacidade que venham a ser lançados suportando BLE 5.0.
 
@@ -164,9 +211,8 @@ Ademais, a natureza de dispositivos embarcados é de baixo consumo e baixo proce
 
 \chapter*{Interface do Driver MPU6050}
 \addcontentsline{toc}{chapter}{Interface do Driver MPU6050}
-\nocite{<10.5555/1593499>}
-\nocite{<10.5555/1457534>}
-\nocite{10.5555/1593511}
+\nocite{Stallman}
+\nocite{Huang}
 \label{sec:driver}
 \lstset{basicstyle=\normalsize}
 \lstinputlisting{mpu6050.c}
