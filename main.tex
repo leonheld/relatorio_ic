@@ -49,30 +49,27 @@
 
 \chapter{Resumo}
 
-O diagnóstico prematuro correto de enfermidades respiratórias pode representar uma redução significativa de mortes. Nesse sentido, são utilizados métodos de asculta pulmonar, realizada rotineiramente por médicos treinados. Um ponto forte é o baixo custo, não possuindo necessidade de equipamentos proibitivamente caros e não invasivo, pois não exige movimentação excessiva de pacientes acamados. No entanto, o examinador pode ser impedido de executar o exame com acurácia devido à inexperiência e capacidade auditiva. Assim, surgiram estetoscópios eletrônicos de baixo custo, que podem captar e preparar sinais que podem ser processados via técnicas de análise, retirando a subjetividade e democratizando o acesso ao exame. Esse trabalho propõe o aprimoramento e expansão de um sistema de aquisição de sons respiratórios produzidos no LCS - UFSC. O módulo\cite{willian}, - que antes contava com receptor e transmissor \textit{Bluetooth 5.0}, e um periférico de aquisição de sinais analógicos - foi aprimorado com uma nova interface para sensor de posicionamento espacial, de forma a auxiliar o leque de informações disponíveis para processamento e próximas pesquisas nessa área. Pesquisas recentes sobre sons pulmonares sugerem que o exame pode ser usado para detecção antecipada de doenças como COVID-19 \cite{Huang}, tornando estetoscópios eletrônicos ainda mais pertinentes pelas vantagens supracitadas.
+
 
 
 Palavras-chave: Instrumentação médica. Sistema respiratório. Sons respiratórios. Estetoscópio Eletrônico. Processamento Digital de Sinais.
 
 \chapter{Introdução}
 
-\section{Revisão bibliográfica}
-\label{sec:review}
-Os principais conceitos a serem revisados são os de Sistemas Operacionais em Tempo Real, Protocolos de Comunicação, familizarização com os manuais e \textit{datasheets} dos equipamentos utilizados e leitura da pesquisa original realizada por \cite{willian}. Diversos manuais e documentos de software foram consultados durante essa e todas as etapas do projeto.
+O diagnóstico prematuro correto de enfermidades respiratórias pode representar uma redução significativa de mortes. Nesse sentido, são utilizados métodos de asculta pulmonar, realizada rotineiramente por médicos treinados. Um ponto forte é o baixo custo, não possuindo necessidade de equipamentos proibitivamente caros e não invasivo, pois não exige movimentação excessiva de pacientes acamados. No entanto, o examinador pode ser impedido de executar o exame com acurácia devido à inexperiência e capacidade auditiva. Assim, surgiram estetoscópios eletrônicos de baixo custo, que podem captar e preparar sinais que podem ser processados via técnicas de análise, retirando a subjetividade e democratizando o acesso ao exame. Esse trabalho propõe o aprimoramento e expansão de um sistema de aquisição de sons respiratórios produzidos no LCS - UFSC. O módulo\cite{willian}, - que antes contava com receptor e transmissor \textit{Bluetooth 5.0}, e um periférico de aquisição de sinais analógicos - foi aprimorado com uma nova interface para sensor de posicionamento espacial.
 
-\cite{tanenbaum} define um Sistema Operacional (SO) como software que rode em modo privilegiado. Ou seja, é o software que roda mais perto do hardware. Normalmente esse software é usado como barreira entre o hardware e o software de alto nível, sendo também chamado de \textit{Middleware}. O SO define um claro ponto de entrada e saída para programas que rodem em alto nível. Também pode conter uma lógica de organização de qual programa vai ser executado em qual momento afim de obter o melhor uso de tempo possível de um dado processador.
+\section{Objetivo}
 
-\cite{freertos} define um Sistema Operacional em Tempo Real como um sistema que precisa saber o tempo de término quão mais exato de uma tarefa. Ou seja, um sistema em tempo real se carateriza pelo caráter determínistico. É ideal para aplicações onde ações externas precisam ser induzidas em intervalos de tempo regulares e extremamente corretos, como aquisição de som, no nosso caso, ou o disparo de um air-bag. 
+O aprimoramento do sistema - referenciado na introdução deste capítulo -, tem como objetivo auxiliar o leque de informações disponíveis para processamento e próximas pesquisas nessa área. Em específico, informações sobre o posicionamento toráxico do paciente aliadas as informações extraídas dos sons pulmonares podem ajudar a mitigar fatores de erro no processamento desses mesmos dados.
 
-Protocolos de Comunicação são, como definidos por \cite{morislav} como um conjunto de regras que governam como mensagens deverão ser trocadas por computadores. É preciso entender, em especial, como funcionam os protocolos de comunicação \textit{serial}, \textit{i\textsuperscript{2}c} e \textit{SPI}, sendo que os dois últimos são utilizados para a obter os dados dos sensores inseridos no sistema.
-
-\cite{taoe} define os dois protocolos de maneira extremamente semelhante, mas cita diferenças claras como a velocidade de transmissão e a comunicação totalmente bidirecional (full-duplex) na \textit{SPI} e a simplicidade e fácil adesão de novos dispositivos no \textit{bus} (faixa de cabos que transmite informação entre vários dispostivos) que é essencialmente a comunicação \textit{i\textsuperscript{2}c}, permitindo fácil extensão de mais dispositivos num mesmo \textit{bus}. Assim, possuímos dois tipos de comunicação bem suportada com parâmetros bem definidos e amplamente utilizadas para todo tipo de comunicação eletrônica.
-
+\cite{Huang} sugere que a ascultação pulmonar pode ser usada para detecção antecipada de doenças como COVID-19, tornando estetoscópios eletrônicos ainda mais pertinentes pelas vantagens já citadas. 
 
 
 \chapter{MATERIAL E MÉTODOS}
-\label{sec:hardware}
-\section{Características de módulos microcontrolados com capacidades \textit{BLE 5.0}}
+
+
+\section{Revisão bibliográfica}
+\label{sec:review}
 
 A tecnologia \textit{Bluetooth 5.0} é uma tecnologia definida por um grupo de trabalho denominado \textit{Bluetooth Special Interest Group}. Nesse, se define um padrão de comunicação sem fio entre dois - ou mais - dispositivos numa banda de frequência normalmente utilizada para fins industriais, científicos e médicos. Originalmente, o Bluetooth foi criado para estabelecer um tipo de comunicação simples, serial, que já existia na forma de conexão via cabo entre dispositivos.
 
@@ -82,7 +79,27 @@ A necessidade de se utilizar uma tecnologia de ponta nesse projeto surge da gran
  
 Também é um protocolo aberto para implementação, realizado pelas principais empresas de tecnologia mundiais, fomentando os pontos de interoperabilidade de equipamentos e segurança. 
 
-O sistema original foi criado usando uma plataforma embarcada da \textit{Texas Instruments}\textsuperscript{\textregistered} codenome \texttt{LAUCHPAD-XL} contendo o chip \textit{CC2640R2}, e suportando a tecnologia \textit{BLE 5.0}, \textit{Bluetooth Low Energy 5.0}. A empresa também nos disponibiliza, como parte do pacote onde a plataforma está inserida, diversos \textit{softwares} e \textit{firmwares} que podem ser utilizados para programar nossas próprias aplicações utilizando a tecnologia Bluetooth. O kit de desenvolvimento utilizado foi o \textit{SDK 1.50.00.58}. Os novos SDK também incluem as ferramentas necessárias para realização do projeto, mas nos momentos iniciais a aclimação com as novas ferramentas se mostrou muito trabalhosa para o porte de todo o código que já havia sido escrito.
+O sistema construído conta com uma interface para acelerômetro, giroscópio (\textbf{Módulo 2.2}) e um \textit{ADC} - \textit{Analog to Digital Converter}, Conversor Analógico-Digital - (\textbf{Módulo 2.1}). O acelerômetro + giroscópio é utilizado para obter informação espacial do tórax, e o Conversor Analógico-Digital é utilizado para obter sons respiratórios via uma interface de transdutores (\textbf{Módulo 1}).
+
+Também conta com um programa escrito em Python que obtém os dados recebidos pelo USB - via serial - do módulo de recepção dos dados, denominado \textbf{Módulo 4}, que são enviados pelo módulo de amostragem, ou \textbf{Módulo 3}.
+
+\begin{center}
+    \includegraphics[width=0.9\textwidth]{esquematico_novo.png}\\
+    \footnotesize{Fonte: O autor.}
+\end{center}
+
+%todo: citar aqui certinho a interface
+
+Dado o problema de aquisição de dados em períodos de tempo rígido, existe a necessidade de uso de um Sistema Operacional em Tempo Real rodando em ambos módulos de amostragem e recepção dos dados. 
+
+De acordo com \cite{freertos} um Sistema Operacional em Tempo Real como um sistema que precisa saber o tempo de término quão mais exato de uma tarefa. Ou seja, um sistema em tempo real se carateriza pelo caráter determínistico. É ideal para aplicações onde ações externas precisam ser induzidas em intervalos de tempo regulares e extremamente corretos, como aquisição de som, no nosso caso, ou o disparo de um air-bag. 
+
+Ambos módulos de Amostragem e Recepção dos dados são placas de desenvolvimento da \textit{Texas Instruments}\textsuperscript{\textregistered}, codenome \texttt{LAUCHPAD-XL} contendo o chip \textit{CC2640R2} e que suportam a tecnologia \textit{BLE 5.0}, \textit{Bluetooth Low Energy 5.0}. 
+
+Ademais, a empresa disponibiliza juntamente com as placas um Sistema Operacional em Tempo Real denominado \texttt{TIRTOS} juntamente com um kit de desenvolvimento (SDK). Por estes, fazemos uso das facilidades do hardware de Bluetooth que existem nessa plataforma.
+
+\label{sec:hardware}
+\section{Características de módulos microcontrolados com capacidades \textit{BLE 5.0}}
 
 \begin{center}
     \includegraphics[width=2.8\textwidth]{soc.jpg}\\
@@ -194,12 +211,6 @@ A metodologia de programação desse periférico se deu no desenvolvimento de um
 
 A taxa de aquisição desse sensor foi programada em função da taxa de aquisição do \textit{ADC}. A cada disparo do relógio, existe uma simples lógica de contador que divide esse clock afim de realizar a aquisição do acelerômetro + giroscópio. Dessa forma, a taxa de aquisição do acelerômetro + giroscópio nunca pode ser maior do que a do \textit{ADC}. De qualquer forma a taxa de 12MHz do \textit{ADC} é maior que a taxa de 1KHz do acelerômetro e 8KHz do giroscópio.
 
-\vspace{0.5cm}
-\begin{center}
-    \includegraphics[width=0.9\textwidth]{esquematico_novo.png}\\
-    \footnotesize{Fonte: O autor.}
-\end{center}
-    %\includepdf[pages=-,pagecommand={},width=0.2\textwidth]{esquematico_novo.pdf}
 
 \chapter{RESULTADOS E DISCUSSÃO}
 As condições para realização dos testes não foi propícia devido aos eventos externos ocorridos no ano de 2020, impossibilitando tanto contato quanto acesso aos equipamentos e profissionais necessários para continuar os trabalhos normalmente, dadas as questões sanitárias. De qualquer forma, houveram testes regulares em todas as partes do projeto, o que garante o funcionamento em ambiente de desenvolvimento.
