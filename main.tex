@@ -6,6 +6,8 @@
 \usepackage{pdfpages}
 \usepackage{hyperref}
 \usepackage{textcomp}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric}
 
 \usepackage{listings}
 \usepackage{indentfirst} %\section or \chapter by default don't indent the first paragraph for some absurd reason!
@@ -62,7 +64,7 @@ O prematuro diagnóstico de enfermidades respiratórias pode representar uma red
 
 \section{Objetivo}
 
-Este trabalho objetivou o aprimoramento de sistema de captação de sons respiratórios anteriormente desenvolvido, adequando-o para a aquisição de sons respiratórios em ambiente hospitalar.
+Esse trabalho objetivou o aprimoramento de sistema de captação de sons respiratórios anteriormente desenvolvido, adequando-o para a aquisição de sons respiratórios em ambiente hospitalar.
 
 Como desenvolvimento adicional, acrescentou-se sensor para registrar deslocamento da parede torácica para identificar a fase respiratória. 
 
@@ -132,18 +134,18 @@ Existe um protocolo de comunicação não-acessível pelo usuário da placa entr
 
 Dado o problema de aquisição de dados em períodos de tempo rígido, existe a necessidade de uso de um Sistema Operacional em Tempo Real rodando em ambos módulos de amostragem e recepção dos dados. 
 
-De acordo com \cite{freertos} um Sistema Operacional em Tempo Real como um sistema que precisa saber o tempo de término quão mais exato de uma tarefa. Ou seja, um sistema em tempo real se carateriza pelo caráter determínistico. É ideal para aplicações onde ações externas precisam ser induzidas em intervalos de tempo regulares e extremamente corretos, como aquisição de som, no nosso caso, ou o disparo de um air-bag.
+De acordo com \cite{freertos} um Sistema Operacional em Tempo Real como um sistema que precisa saber o tempo de término quão mais exato de uma tarefa. Ou seja, um sistema em tempo real se carateriza pelo caráter determínistico. É ideal para aplicações onde ações externas precisam ser induzidas em intervalos de tempo regulares e extremamente corretos, como aquisição de som - no caso de estudo deste trabalho - ou o disparo de um air-bag.
 
-O princípio de funcionamento básico de um RTOS é fazer com que várias rotinas (também chamadas de funções) possam ser executadas em \textit{quasi-}paralelismo. Ou seja, eficientemente alocando tempo de execução de código em um único processador para concluir várias tarefas diferentes, criando uma ilusão de paralelismo entre as mesmas. Além, a parte de "Tempo Real" se refere aos padrões rígidos que o sistema impõe para execução de tarefas.
+O princípio de funcionamento básico de um RTOS é fazer com que várias rotinas (também chamadas de funções) possam ser executadas em \textit{quasi-}paralelismo. Ou seja, eficientemente alocando tempo de execução de código em um único processador para concluir várias tarefas diferentes, criando uma ilusão de paralelismo entre as mesmas. Além, a parte de "Tempo Real" se refere aos padrões rígidos que o sistema impõe para execução de tarefas \cite{tanenbaum}.
 
-O principal bloco conceitual de um Sistema Operacional é o de \textit{Task}, \textit{Tarefa} ou \textit{Thread}. É uma estrutura contendo:
+A principal estrutura de dados de um Sistema Operacional é o de \textit{Task}, \textit{Tarefa} ou \textit{Thread}. É uma estrutura contendo:
 
 \begin{enumerate}
     \item A rotina (ou função) que deverá ser executada.
     \item Metadados sobre que acompanham a rotina. Estes são o modo atual de execução da rotina, sua prioridade e tamanho de memória disponível para o uso da rotina.
   \end{enumerate}
 
-  Os metadados sobre a execução de uma tarefa, chamados de estado de execução mudam durante a execução da tarefa e podem ser \texttt{READY, RUNNING, BLOCKED} ou \texttt{TERMINATED}. A passagem de um estado para outro é sempre igual, e compõe a "vida de execução" de uma tarefa. 
+  Os metadados sobre a execução de uma tarefa, chamados de estado de execução mudam durante a execução da tarefa e podem ser \texttt{READY, RUNNING, BLOCKED} ou \texttt{TERMINATED}. A passagem de um estado para outro é sempre igual, e compõe a "vida de execução" de uma tarefa \cite{tirtosguide}. 
 
 Na figura abaixo é possível observar a vida de execução de uma tarefa.
 
@@ -152,8 +154,19 @@ Na figura abaixo é possível observar a vida de execução de uma tarefa.
     \footnotesize{Fonte: Texas Instruments}
 \end{center}
 
-O programa que realiza a funcionalidade de \textit{quasi-}paralelismo num RTOS é o escalonador \cite{tanenbaum}. A função principal do escalonador é criar uma fila das tarefas disponíveis escritas pelo programador e garantir que estas possam ser executadas dentro de um tempo limite chamado de \textit{time-slice} (na ordem de microssegundos). O escalonador pode ser observado, essencialmente, como um algoritmo de organização que minimiza o tempo de execução levando em consideração os metadados de cada tarefa.
+Existem três blocos conceituais dentro de um Sistema Operacional: O \textit{Kernel}, \textit{User Space} e os \textit{Middleware}. Essa divisão se objetiva por segregar a memória, afim de manter segurança na execução de aplicações \cite{tanenbaum}.
 
+O Kernel é a parte que tem controle total sobre o sistema, possuindo acesso irrestrito à memória do sistema, sendo responsável pelo controle das interações entre software e hardware, alocando recursos e executando tarefas.
+
+O \textit{User Space} carateriza a parte da memória onde programas de usuário podem ser escritos, e podemos acessar funcionalidades do hardware via uma textit{API - Application Programming Interface}. Essa API configura um exemplo de \textit{Middleware}. Outros tipos de middleware pode ser códigos relacionados com conectividade (Bluetooth, TCP/IP), sistemas de arquivo ou gerenciamento de energia dos módulos embarcados.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale = 0.7]{os_esquematico.jpg}
+    \caption{Fonte: O Autor}
+\end{figure}
+
+O programa que realiza a funcionalidade de \textit{quasi-}paralelismo num RTOS é o escalonador, que reside no Kernel. A função principal do escalonador é criar uma fila das tarefas disponíveis escritas pelo programador e garantir que estas possam ser executadas dentro de um tempo limite chamado de \textit{time-slice} (na ordem de microssegundos). O escalonador pode ser observado, essencialmente, como um algoritmo de organização que minimiza o tempo de execução levando em consideração os metadados de cada tarefa\cite{tanenbaum}.
 
 Para garantir que cada tarefa possa ser executada dentro do \textit{time-slice}, o escalonador pode dinamicamente fazer a \textit{preempção} de quaisquer tarefa por outra. Ou seja, se uma tarefa está sendo executada (modo de execução \texttt{RUNNING)}, o escalonador pode parar a execução da mesma se 
 
@@ -164,27 +177,27 @@ Para garantir que cada tarefa possa ser executada dentro do \textit{time-slice},
 
 Tais sistemas são de suma importância para diversas aplicações na indústria e na ciência, sendo exaustivamente utilizado em diversos setores, como robótica, equipamentos biomédicos e quaisquer sistemas sensíveis a requerimentos de tempo. O compreendimento desses mecanismos são essenciais para a programação do ambos firmware dos módulos de recepção e amostragem.
 
-Ademais, a empresa disponibiliza juntamente com os \texttt{LAUCHPAD-XL} um Sistema Operacional em Tempo Real denominado \texttt{TIRTOS} juntamente com um kit de desenvolvimento (SDK). Por estes, fazemos uso das facilidades do hardware de Bluetooth que existem nessa plataforma.
-
 \section{Estudo de ambientes de programação, Sistema Operacional e exemplos de fabricante}
 
 \subsection{TIRTOS}
 
-A \textit{TI} disponibiliza, em termos, o TIRTOS, um Sistema Operacional em Tempo Real (a partir daqui denominado como RTOS, ou \textit{Real Time Operating System}, \textit{Sistema Operacional em Tempo Real}, em tradução livre). Tal RTOS é uma peça de software capaz de gerenciar de forma inteligente, levando em consideração questões de tempo, rotinas e procedimentos escritos em linguagem de programação\cite{tirtosguide}. A empresa, no entanto, não disponibiliza o código aberto de tal RTOS, mas sim uma \textit{API - Application Programming Interface}, que permite seu uso. Essa \textit{API} contém \textit{drivers}, ou camadas de abstração entre o código e o uso do hardware. Por exemplo, um driver de timer para controlar ciclos de tempo, ou um driver de periférico como \textit{SPI}.
+Ademais, a Texas Instruments disponibiliza juntamente com os \texttt{LAUCHPAD-XL} um Sistema Operacional em Tempo Real denominado \texttt{TIRTOS} juntamente com um kit de desenvolvimento (SDK), este último contendo um Middleware que possibilita a utilização do protocolo Bluetooth na programação das placas. Por estes, fazemos uso das facilidades do hardware de Bluetooth que existem nessa plataforma. A empresa, no entanto, não disponibiliza o código aberto de tal RTOS, mas sim uma API, que permite seu uso \cite{tirtosguide}.
+
+Entre essas APIs, existem drivers de periféricos (como SPI, timers e pinos de propósito geral), mecanismos de criação de tarefas e sistemas de gerenciamento de energia das placas.
 
 A empresa também disponibiliza uma \textit{IDE - Integrated Development Environment}, ou Ambiente Integrado de Desenvolvimento chamado \texttt{Code Composer}. Esse ambiente contém um editor de texto, compilador, depurador e várias ferramentas de análise em tempo real para diversas plataformas.
 
-Por este software também disponibiliza exemplos de aplicação que podem ser extendidos e modificados livremente, sob licença aberta. Um desses é o \textit{Simple Port Profile}, que é um simples firmware que conecta duas placas de desenvolvimento \textit{LAUNCHPAD-XL} e transfere bits numa configuração bidirecional entre as duas.
+Por esse ambiente, também são disponibilizados exemplos de aplicação que podem ser extendidos e modificados livremente, sob licença aberta. Um desses é o \textit{Simple Port Profile}, que é um simples firmware que conecta duas placas de desenvolvimento \textit{LAUNCHPAD-XL} e transfere bits numa configuração bidirecional entre as duas.
 
-Esse exemplo foi compilado, estudado e analisado, visando compreendimento base do Sistema Operacional. O projeto também usa esse exemplo de aplicação como projeto-base.
+Esse exemplo foi compilado, estudado e analisado, visando compreendimento base do Sistema Operacional. O projeto também usa este exemplo de aplicação como projeto-base.
 
 \section{Desenvolvimento de firmware para testes de sinais simulados de aúdio}
 
-A partir disso, foram iniciados estudos sobre como o sistema de aquisição e transmissão criado por \cite{willian}. Durante esse passo, notamos as limitações promovidas pela construção e configuração padrão do hardware da plataforma \textit{CC2640R2}. 
+A partir disso, foram iniciados estudos sobre como o sistema de aquisição e transmissão criado por \cite{willian}. Durante este passo, notamos as limitações promovidas pela construção e configuração padrão do hardware da plataforma \textit{CC2640R2}. 
 
 O principal esforço se deu a trabalhar dentro de limitações extremas de memória volátil (memória não persistente). Com apenas 8\texttt{kb} de memória do tipo volátil, sendo que o Sistema Operacional em uso pode ocupar cerca de $25\%$ desse valor, fazendo com que inserção de rotinas novas necessitem de cuidado para evitar possíveis \textit{overflows}, ou estouro de memória por sua insuficiência.
 
-O sistema conta com um \textit{ADC} de 16 \textit{bits} de dois canais modelo \textit{LTC1867LCGN} da \textit{Linear Devices\textsuperscript{\textregistered}}. Este se conecta a uma front-end desenvolvida por [trabalho que desenvolveu a frontend]
+O sistema conta com um \textit{ADC} de 16 \textit{bits} de dois canais modelo \textit{LTC1867LCGN} da \textit{Linear Devices\textsuperscript{\textregistered}}. Esse se conecta a uma front-end desenvolvida por [trabalho que desenvolveu a frontend]
 
 \begin{center}
     \includegraphics[width=0.7\textwidth]{estetoscopio.jpg}\\
@@ -197,7 +210,7 @@ A comunicação \textit{ADC} \textrightarrow \textit{CC2640} é realizada pelo p
 
 %TODO: Inserir aqui figura (na real montar um tabular que fica mais limpo) das configurações da SPI. 12MHz e tal e tal
 
-    \begin{table}[]
+    \begin{table}[ht]
         \centering
             \begin{tabular}{|l|l|}
             \hline
@@ -239,7 +252,7 @@ Uma das propostas concebidas pelo orientador foi a integração de um acelerôme
 
 O periférico de giroscópio e acelerômetro escolhido foi o \textit{MPU6050}. Seu baixo custo, alta precisão e plena disponibilidade oferecem um bom dispositivo. O \textit{MPU6050} é conta com 6 \textit{ADCs}, cada um de 16 \textit{bits}. Cada um desses \textit{ADCs} é responsável pela digitalização de um eixo do acelerômetro ou do giroscópio embarcados na \textit{breakout board}. Também oferece um filtro passa-baixas digitalmente programável, descartando a necessidade de pós-processamento e baixo consumo (em torno de \textit{3.6mA} de acordo com a fabricante). 
 
-Nossa expansão incluiu o módulo de acelerômetro e giroscópio \textit{MPU6050}, o que possibilita a captação de sinais de posição em três dimensões com \textit{n}-graus de liberdade, onde \textit{n} é o número de sensores acelerômetro e giroscópio disponíveis no sistema. Claramente existe um limite no número de sensores dado as limitações de memória e hardware disponíveis no sistema. Em específico, o MPU6050 possui um sistema simples de endereçamento, que permite endereçar até dois chips usando apenas um periférico \textit{i\textsuperscript{2}c}. Como a plataforma atual possui dois desses periférico, é possível o endereçamento de até 4 combos de sensores de posição espacial. Qualquer pino pode ser reprogramado para funcionar como esse protocolo.
+A expansão incluiu o módulo de acelerômetro e giroscópio \textit{MPU6050}, o que possibilita a captação de sinais de posição em três dimensões com \textit{n}-graus de liberdade, onde \textit{n} é o número de sensores acelerômetro e giroscópio disponíveis no sistema. Claramente existe um limite no número de sensores dado as limitações de memória e hardware disponíveis no sistema. Em específico, o MPU6050 possui um sistema simples de endereçamento, que permite endereçar até dois chips usando apenas um periférico \textit{i\textsuperscript{2}c}. Como a plataforma atual possui dois desses periférico, é possível o endereçamento de até 4 combos de sensores de posição espacial. Qualquer pino pode ser reprogramado para funcionar como este protocolo.
 
 Abaixo são listados os parâmetros de configuração \textit{i\textsuperscript{2}c}.
 
