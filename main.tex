@@ -132,11 +132,37 @@ Existe um protocolo de comunicação não-acessível pelo usuário da placa entr
 
 Dado o problema de aquisição de dados em períodos de tempo rígido, existe a necessidade de uso de um Sistema Operacional em Tempo Real rodando em ambos módulos de amostragem e recepção dos dados. 
 
-De acordo com \cite{freertos} um Sistema Operacional em Tempo Real como um sistema que precisa saber o tempo de término quão mais exato de uma tarefa. Ou seja, um sistema em tempo real se carateriza pelo caráter determínistico. É ideal para aplicações onde ações externas precisam ser induzidas em intervalos de tempo regulares e extremamente corretos, como aquisição de som, no nosso caso, ou o disparo de um air-bag. 
+De acordo com \cite{freertos} um Sistema Operacional em Tempo Real como um sistema que precisa saber o tempo de término quão mais exato de uma tarefa. Ou seja, um sistema em tempo real se carateriza pelo caráter determínistico. É ideal para aplicações onde ações externas precisam ser induzidas em intervalos de tempo regulares e extremamente corretos, como aquisição de som, no nosso caso, ou o disparo de um air-bag.
 
 O princípio de funcionamento básico de um RTOS é fazer com que várias rotinas (também chamadas de funções) possam ser executadas em \textit{quasi-}paralelismo. Ou seja, eficientemente alocando tempo de execução de código em um único processador para concluir várias tarefas diferentes, criando uma ilusão de paralelismo entre as mesmas. Além, a parte de "Tempo Real" se refere aos padrões rígidos que o sistema impõe para execução de tarefas.
 
-Tais sistemas são de suma importância para diversas aplicações na indústria e na ciência, sendo exaustivamente utilizado em diversos setores, como robótica, equipamentos biomédicos e quaisquer sistemas sensíveis a requerimentos de tempo.
+O principal bloco conceitual de um Sistema Operacional é o de \textit{Task}, \textit{Tarefa} ou \textit{Thread}. É uma estrutura contendo:
+
+\begin{enumerate}
+    \item A rotina (ou função) que deverá ser executada.
+    \item Metadados sobre que acompanham a rotina. Estes são o modo atual de execução da rotina, sua prioridade e tamanho de memória disponível para o uso da rotina.
+  \end{enumerate}
+
+  Os metadados sobre a execução de uma tarefa, chamados de estado de execução mudam durante a execução da tarefa e podem ser \texttt{READY, RUNNING, BLOCKED} ou \texttt{TERMINATED}. A passagem de um estado para outro é sempre igual, e compõe a "vida de execução" de uma tarefa. 
+
+Na figura abaixo é possível observar a vida de execução de uma tarefa.
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{task_execution.PNG}\\
+    \footnotesize{Fonte: Texas Instruments}
+\end{center}
+
+O programa que realiza a funcionalidade de \textit{quasi-}paralelismo num RTOS é o escalonador \cite{tanenbaum}. A função principal do escalonador é criar uma fila das tarefas disponíveis escritas pelo programador e garantir que estas possam ser executadas dentro de um tempo limite chamado de \textit{time-slice} (na ordem de microssegundos). O escalonador pode ser observado, essencialmente, como um algoritmo de organização que minimiza o tempo de execução levando em consideração os metadados de cada tarefa.
+
+
+Para garantir que cada tarefa possa ser executada dentro do \textit{time-slice}, o escalonador pode dinamicamente fazer a \textit{preempção} de quaisquer tarefa por outra. Ou seja, se uma tarefa está sendo executada (modo de execução \texttt{RUNNING)}, o escalonador pode parar a execução da mesma se 
+
+\begin{itemize}
+    \item Seu \textit{time-slice} tiver acabado ou
+    \item Exista outra tarefa de prioridade mais alta que esteja no estado \texttt{READY}.
+  \end{itemize}
+
+Tais sistemas são de suma importância para diversas aplicações na indústria e na ciência, sendo exaustivamente utilizado em diversos setores, como robótica, equipamentos biomédicos e quaisquer sistemas sensíveis a requerimentos de tempo. O compreendimento desses mecanismos são essenciais para a programação do ambos firmware dos módulos de recepção e amostragem.
 
 Ademais, a empresa disponibiliza juntamente com os \texttt{LAUCHPAD-XL} um Sistema Operacional em Tempo Real denominado \texttt{TIRTOS} juntamente com um kit de desenvolvimento (SDK). Por estes, fazemos uso das facilidades do hardware de Bluetooth que existem nessa plataforma.
 
