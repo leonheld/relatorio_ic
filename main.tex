@@ -6,6 +6,7 @@
 \usepackage{pdfpages}
 \usepackage{hyperref}
 \usepackage{textcomp}
+\usepackage{float}
 \usepackage{tikz}
 \usetikzlibrary{shapes.geometric}
 
@@ -60,7 +61,7 @@ Palavras-chave: Instrumentação médica. Sistema respiratório. Sons respirató
 
 \chapter{Introdução}
 
-O prematuro diagnóstico de enfermidades respiratórias pode representar uma redução significativa de óbitos. Dentre os métodos de diagnóstico, tem-se a asculta pulmonar, rotineiramente realizada  por médicos treinados. Seus pontos fortes são o baixo custo e o baixo tempo de resposta,  não demandando  o deslocamento de pacientes acamados para salas de exames. No entanto, o diagnóstico é fortemente dependente da experiência e capacidade auditiva do examinador. Neste contexto, surgiram estetoscópios eletrônicos de baixo custo que podem captar e registrar sinais que podem ser digitlamente processados com o objetivo de prover indíces quantitativos para orientar o diagnóstico, de tal forma a tornar o diagnóstico menos subjetivo e permitir a troca de informações entre especialistas. Esse trabalho propõe o aprimoramento com integração de funcionalidade adicionais a  um sistema de aquisição de sons respiratórios desenvolvido no LCS - UFSC. O módulo\cite{willian}, - que antes contava com receptor e transmissor \textit{Bluetooth 5.0}, e um periférico de aquisição de sinais analógicos - foi aprimorado com a integração de sensor para registro da fase respiratória.
+O prematuro diagnóstico de enfermidades respiratórias pode representar uma redução significativa de óbitos. Dentre os métodos de diagnóstico, tem-se a asculta pulmonar, rotineiramente realizada  por médicos treinados. Seus pontos fortes são o baixo custo e o baixo tempo de resposta,  não demandando  o deslocamento de pacientes acamados para salas de exames. No entanto, o diagnóstico é fortemente dependente da experiência e capacidade auditiva do examinador. Neste contexto, surgiram estetoscópios eletrônicos de baixo custo que podem captar e registrar sinais que podem ser digitalmente processados com o objetivo de prover indíces quantitativos para orientar o diagnóstico, de tal forma a tornar o diagnóstico menos subjetivo e permitir a troca de informações entre especialistas. Esse trabalho propõe o aprimoramento com integração de funcionalidade adicionais a  um sistema de aquisição de sons respiratórios desenvolvido no LCS - UFSC. O módulo desenvolvido por \cite{willian}, - que antes contava com receptor e transmissor \textit{Bluetooth 5.0}, e um periférico de aquisição de sinais analógicos - foi aprimorado com a integração de sensor para registro da fase respiratória.
 
 \section{Objetivo}
 
@@ -72,6 +73,7 @@ Como desenvolvimento adicional, acrescentou-se sensor para registrar deslocament
 
 
 \section{Introdução}
+
 %TODO: Consertar essa figura. Não fica bonito ter a figura sem texto antes, mas ela não cabe no restante da página. Se deixar muito pequena fica pouco legível.
 \begin{center}
     \includegraphics[width=0.9\textwidth]{esquematico_novo.png}\\
@@ -80,7 +82,7 @@ Como desenvolvimento adicional, acrescentou-se sensor para registrar deslocament
 
 A Figura 1 apresenta o diagrama em blocos do sistema desenvolvido em trabalho anterior \cite{willian}, no qual se incluiu um interface para acelerômetro e giroscópio.
 
-O sistema possui módulo para a captação de sons respiratórios (módulo 1), firmware dos módulos de amostragem, transmissão e recepção de dados (módulos 3 e 4), bem como de aplicativo para sistema operacional Windows (módulo 5). Este aplicativo objetiva a apresentação, armazenamento e reprodução das formas de onda amostradas. O aplicatiov conta com programa escrito em Python (desenvolvido neste trabalho) que obtém os dados recebidos pelo USB - via serial - do módulo de recepção dos dados, denominado \textbf{Módulo 4}, que são enviados pelo módulo de amostragem, ou \textbf{Módulo 3}.Cada um destes módulos é detalhado nas subseções seguintes.
+O sistema possui módulo para a captação de sons respiratórios (módulo 1), firmware dos módulos de amostragem, transmissão e recepção de dados (módulos 3 e 4), bem como de aplicativo para sistema operacional Windows (módulo 5). Este aplicativo objetiva a apresentação, armazenamento e reprodução das formas de onda amostradas. O aplicativo conta com programa escrito em Python (desenvolvido neste trabalho) que obtém os dados recebidos pela USB - via serial - do módulo de recepção dos dados, denominado \textbf{Módulo 4}, que são enviados pelo módulo de amostragem, ou \textbf{Módulo 3}.Cada um destes módulos é detalhado nas subseções seguintes.
 
 O módulo 3 (Figura 1) controla a digitalização dos sinais do ADC via interface SPI, empacota as amostras e os transmite por radiofrequência (Bluetooth) para o módulo de recepção (módulo 4).  Estas etapas são realizadas por meio do kit de desenvolvimento BLE da Texas Instruments (CC2640R2F \texttt{LAUNCHPAD-XL Kit}). Este kit com protocolo Bluetooth 5 proporciona uma considerável redução no tempo de desenvolvimento da solução BLE, oferecendo taxa de transmissão e consumo de energia que atendem às necessidades do projeto. 
 
@@ -91,21 +93,9 @@ Para administrar todo este conjunto de tarefas, o módulo \texttt{LAUNCHPAD-XL K
 Para melhor compreensão do sistema existente, este trabalho foi iniciado com o estudo do protocolo Bluetooth e o TIRTOS.
 
 
-\section{Revisão bibliográfica}
-\label{sec:review}
-
-\subsection{Bluetooth}
-A tecnologia \textit{Bluetooth 5.0} é uma tecnologia definida por um grupo de trabalho denominado \textit{Bluetooth Special Interest Group}. Nesse, se define um padrão de comunicação sem fio entre dois - ou mais - dispositivos numa banda de frequência normalmente utilizada para fins industriais, científicos e médicos. Originalmente, o Bluetooth foi criado para estabelecer um tipo de comunicação simples, serial, que já existia na forma de conexão via cabo entre dispositivos.
-
-De acordo com \cite{omre}, os principais pontos que fazem com que \textit{Bluetooth} sejam uma boa escolha meios médicos são: interoperabilidade, baixo consumo, customização de formato de transmissão (pacote), compatibilidade eletromagnética (equipamentos médicos coexistem, não podendo inteferir negativamente uns com os outros), segurança na transmissão para proteger confidencialidade da informação e hub de sensores (diversos equipamentos médicos precisam ser atualizados em tempo real via internet para fins de telemedicina). 
-
-A necessidade de se utilizar uma tecnologia de ponta nesse projeto surge da já mencionada grande quantidade de dados envolvidos na transferência de sons respiratórios. Na especificação do \textit{BLE} ou \textit{Bluetooth Low Energy}, um padrão de Bluetooth utilizado pelo baixo consumo, o \textit{throughput} é limitada em 2mpbs, porém, dado um \textit{overhead} utilizado por headers e dependente do hardware onde o protocolo está sendo executado, a velocidade efetiva de transmissão é geralmente menor do que a especificada.
- 
-Também é um protocolo aberto para implementação, realizado pelas principais empresas de tecnologia mundiais, fomentando os pontos de interoperabilidade de equipamentos e segurança. 
-
-
 \label{sec:hardware}
 \section{Características de módulos microcontrolados com capacidades \textit{BLE 5.0}}
+
 
 Ambos módulos de Amostragem e Recepção (módulos 3 e 4, respectivamente na figura 1, seção 3.1) dos dados são placas de desenvolvimento da \textit{Texas Instruments}\textsuperscript{\textregistered}, codenome \texttt{LAUNCHPAD-XL-XL} contendo o chip \textit{CC2640R2} e que suportam a tecnologia \textit{BLE 5.0}, \textit{Bluetooth Low Energy 5.0}.
 
@@ -128,6 +118,14 @@ Existe um protocolo de comunicação não-acessível pelo usuário da placa entr
 
  Algumas limitações de hardware ainda são realidade para essa tecnologia, fato que, por extensão, limita a escolha de placas de desenvolvimento no mercado. A tecnologia \textit{BLE 5.0}, por mais que o protocolo da presente versão tenha sido homologado em 2016, ainda não é totalmente adotada e nem amplamente utilizada por vários dispositivos. Visto que o ecossistema do projeto já estava baseado na \texttt{LAUCHPAD-XL}, o projeto ali se deu prosseguimento.
 
+ \subsection{Bluetooth}
+ O \textit{Bluetooth 5.0} é uma tecnologia definida por um grupo de trabalho denominado \textit{Bluetooth Special Interest Group}\cite{SIG}. Nesse, se define um padrão de comunicação sem fio entre dois - ou mais - dispositivos numa banda de frequência normalmente utilizada para fins industriais, científicos e médicos. Originalmente, o Bluetooth foi criado para estabelecer um tipo de comunicação simples, serial, que já existia na forma de conexão via cabo entre dispositivos.
+ 
+ De acordo com \cite{omre}, os principais pontos que fazem com que \textit{Bluetooth} sejam uma boa escolha meios médicos são: interoperabilidade, baixo consumo, customização de formato de transmissão (pacote), compatibilidade eletromagnética (equipamentos médicos coexistem, não podendo inteferir negativamente uns com os outros), segurança na transmissão para proteger confidencialidade da informação e hub de sensores (diversos equipamentos médicos precisam ser atualizados em tempo real via internet para fins de telemedicina). 
+ 
+ A necessidade de se utilizar uma tecnologia de ponta nesse projeto surge da já mencionada grande quantidade de dados envolvidos na transferência de sons respiratórios. Na especificação do \textit{BLE} ou \textit{Bluetooth Low Energy}, um padrão de Bluetooth utilizado pelo baixo consumo, com alcance de até 350 metros, o \textit{throughput} é limitada em 2Mpbs\cite{Panwar}, porém, dado um \textit{overhead} dependente do hardware onde o protocolo está sendo executado, a velocidade efetiva de transmissão é geralmente menor do que a especificada.
+  
+ Também é um protocolo aberto para implementação, realizado pelas principais empresas de tecnologia mundiais, fomentando os pontos de interoperabilidade de equipamentos e segurança. 
 
 %todo: citar aqui certinho a interface
 \subsection{Sistemas Operacionais em Tempo Real}
@@ -160,11 +158,11 @@ O Kernel é a parte que tem controle total sobre o sistema, possuindo acesso irr
 
 O \textit{User Space} carateriza a parte da memória onde programas de usuário podem ser escritos, e podemos acessar funcionalidades do hardware via uma textit{API - Application Programming Interface}. Essa API configura um exemplo de \textit{Middleware}. Outros tipos de middleware pode ser códigos relacionados com conectividade (Bluetooth, TCP/IP), sistemas de arquivo ou gerenciamento de energia dos módulos embarcados.
 
-\begin{figure}
+\begin{figure}[H]
     \centering
-    \includegraphics[scale = 0.7]{os_esquematico.jpg}
+    \includegraphics[scale = 0.15]{os_esquematico.png}
     \caption{Fonte: O Autor}
-\end{figure}
+\end{figure} 
 
 O programa que realiza a funcionalidade de \textit{quasi-}paralelismo num RTOS é o escalonador, que reside no Kernel. A função principal do escalonador é criar uma fila das tarefas disponíveis escritas pelo programador e garantir que estas possam ser executadas dentro de um tempo limite chamado de \textit{time-slice} (na ordem de microssegundos). O escalonador pode ser observado, essencialmente, como um algoritmo de organização que minimiza o tempo de execução levando em consideração os metadados de cada tarefa\cite{tanenbaum}.
 
@@ -176,10 +174,6 @@ Para garantir que cada tarefa possa ser executada dentro do \textit{time-slice},
   \end{itemize}
 
 Tais sistemas são de suma importância para diversas aplicações na indústria e na ciência, sendo exaustivamente utilizado em diversos setores, como robótica, equipamentos biomédicos e quaisquer sistemas sensíveis a requerimentos de tempo. O compreendimento desses mecanismos são essenciais para a programação do ambos firmware dos módulos de recepção e amostragem.
-
-\section{Estudo de ambientes de programação, Sistema Operacional e exemplos de fabricante}
-
-\subsection{TIRTOS}
 
 Ademais, a Texas Instruments disponibiliza juntamente com os \texttt{LAUCHPAD-XL} um Sistema Operacional em Tempo Real denominado \texttt{TIRTOS} juntamente com um kit de desenvolvimento (SDK), este último contendo um Middleware que possibilita a utilização do protocolo Bluetooth na programação das placas. Por estes, fazemos uso das facilidades do hardware de Bluetooth que existem nessa plataforma. A empresa, no entanto, não disponibiliza o código aberto de tal RTOS, mas sim uma API, que permite seu uso \cite{tirtosguide}.
 
@@ -246,7 +240,7 @@ Uma modificação simples foi um algoritmo de \textit{poooling} - ou espera - de
 
 Quando um botão é pressionado no Client, o mesmo envia uma curta mensagem de 8 bytes para o Server. O Server é conectado via cabo USB ao Notebook. Quando o Notebook detecta essa mensagem, ele envia uma mensagem ao Client pelo Server para que se comece a inicialização da aquisição e ao mesmo tempo começa a gravação dos dados recebidos pelo Server. 
 
-\section{Testes e aprimoramento do Sistema Desenvolvido}
+\section{Aprimoramentos Realizados}
 
 Uma das propostas concebidas pelo orientador foi a integração de um acelerômetro e giroscópio, dispositivo que mede aceleração e posição absoluta, de forma a obter dados espaciais do tórax do paciente. A partir dessa proposta foi elaborado uma interface parar aquisição de dados de pequenos sensores que contém tanto acelerômetro quando giroscópio.
 
@@ -271,13 +265,20 @@ Abaixo são listados os parâmetros de configuração \textit{i\textsuperscript{
 
 A metodologia de programação desse periférico se deu no desenvolvimento de um \hyperref[sec:driver]{\textit{driver}} do mesmo, que abstraí rotinas de baixo nível do periférico via uma \textit{API}. Como no programa escrito em Python para recebimento dos dados pela serial, optamos por uma forte filosofia de portabilidade, escrevendo a biblioteca de uma maneira portável e agnóstica à plataforma, podendo ser utilizada em outros microcontroladores e até outros projetos.
 
-A taxa de aquisição desse sensor foi programada em função da taxa de aquisição do \textit{ADC}. A cada disparo do relógio, existe uma simples lógica de contador que divide esse clock afim de realizar a aquisição do acelerômetro + giroscópio. Dessa forma, a taxa de aquisição do acelerômetro + giroscópio nunca pode ser maior do que a do \textit{ADC}. De qualquer forma a taxa de 12MHz do \textit{ADC} é maior que a taxa de 1KHz do acelerômetro e 8KHz do giroscópio.
+A taxa de aquisição desse sensor foi programada em função da taxa de aquisição do \textit{ADC}. A cada disparo do relógio, existe uma simples lógica de contador que divide esse clock afim de realizar a aquisição do acelerômetro + giroscópio. Dessa forma, a taxa de aquisição do acelerômetro + giroscópio nunca pode ser maior do que a do \textit{ADC}. De qualquer forma a taxa de 12MHz do \textit{ADC} é maior que a taxa de 1KHz do acelerômetro e 8kHz do giroscópio.
 
 
 \chapter{RESULTADOS E DISCUSSÃO}
 As condições para realização dos testes não foi propícia devido aos eventos externos ocorridos no ano de 2020, impossibilitando tanto contato quanto acesso aos equipamentos e profissionais necessários para continuar os trabalhos normalmente, dadas as questões sanitárias. De qualquer forma, houveram testes regulares em todas as partes do projeto, o que garante o funcionamento em ambiente de desenvolvimento.
- 
-Ademais, a natureza de dispositivos embarcados é de baixo consumo e baixo processamento. Logo, a maior dificuldade em todas as etapas do projeto foi fazer uma alta manutenção de RAM (memória volátil). Ainda sim, a plataforma escolhida pode permitir comutações de código entre processadores e famílias de dispositivos, permitindo fácil portabilidade para microcontroladores com maior capacidade que venham a ser lançados suportando BLE 5.0.
+
+Dado que a forma de conexão dos equipamentos e seu hardware continuaram constantes na realização deste trabalho, a distância de operação entre os equipamentos é, de forma aparente, 10 a 5 metros, a mesma realizada por \cite{willian}. 
+
+O sistema sofre ainda, com falta de estabilidade em certos pontos da conexão. Um aumento nos tempos de atualização do Bluetooth já feitos no trabalho anterior mostraram uma melhora, apesar disso, quedas ainda existem. Se cogita que uma das possíveis soluções seja portar o projeto para utilizar uma versão mais nova do firmware distribuído pela fabricante, que conta com possível correção de bugs e ofereça maior estabilidade.
+
+A falta de estabilidade geral do sistema também é ocasionada pela pouca memória volátil existente no sistema. O tamanho de pacote transmitido pelo protocolo sofreu aumento para acomodar os dados do giroscópio e acelerômetro, causando maior uso na memória volátil. 
+
+Como o firmware escrito para os módulos foi realizado em nível alto e portável dentro da linha suportada pela fabricante, e o driver do acelerômetro e giroscópio também foi escrito com este escopo de portabilidade em mente, se sugere o uso de uma plataforma com maior memória volátil disponível, ou plataforma que possa fazer acesso de memória externa a unidade do microprocessador. A organização interna do código e arquitetura geral do firmware foi desenvolvida em torno da pouca memória volátil disponível. Visando a manutenção do código, uma programação mais orientada e seguindo de forma mais próxima a filosofia de Sistemas Operacionais também se beneficiaria com o aumento da quantidade de memória.
+
 
 \addcontentsline{toc}{chapter}{REFERÊNCIAS} 
 \printbibliography
