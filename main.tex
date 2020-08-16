@@ -54,18 +54,17 @@
 
 Entre os diversos métodos de diagnóstico de enfermidades pulmonares, a asculta de sons respiratórios sobre o toráx tem como vantagens o fato de ser  não invasivo e ter baixo custo 
 %adicionar referência
-cite{carvalho}. No entanto, devido à fatores técnicos como qualidade do estetoscópio, acurácia auditiva do examinador e atenuação do som pelo toráx do paciente, além da subjetividade pelo fator humano envolvido no exame, há esforços para tornar este método mais robusto, proporcionando um diagnóstico mais confiável. Este trabalho tem como objetivo aperfeiçoar estetoscópio eletrônico desenvolvido neste laboratório que digitaliza e transmite sons respiratórios, bem como, registra o deslocamento do tórax para identificação da fase respiratória. O sistema consiste de dois módulos transmissor e receptor, que respectivamente amostram e recebem o som em um microcomputador pessoal para armazenar os sons captados de pacientes. O protocolo de transmissão utilizado é o \textit{Bluetooth 5.0}. Neste trabalho, são reportados o estudo, teste e o aprimoramento do sistema.
-
+cite{carvalho}. No entanto, devido à fatores técnicos como qualidade do estetoscópio, acurácia auditiva do examinador e atenuação do som pelo toráx do paciente, além da subjetividade pelo fator humano envolvido no exame, há esforços para tornar este método mais robusto, proporcionando um diagnóstico mais confiável. Este trabalho tem como objetivo aperfeiçoar estetoscópio eletrônico desenvolvido neste laboratório que digitaliza e transmite sons respiratórios, bem como, registra o deslocamento do tórax para identificação da fase respiratória. O sistema consiste-se de dois módulos, transmissor e receptor, que respectivamente amostram e recebem o som em um microcomputador pessoal para armazenar os sons captados de pacientes. O protocolo de transmissão utilizado é o \textit{Bluetooth 5.0}. Neste trabalho, são reportados o estudo, teste e o aprimoramento do sistema.
 
 Palavras-chave: Instrumentação médica. Sistema respiratório. Sons respiratórios. Estetoscópio Eletrônico. Processamento Digital de Sinais.
 
 \chapter{Introdução}
 
-O prematuro diagnóstico de enfermidades respiratórias pode representar uma redução significativa de óbitos. Dentre os métodos de diagnóstico, tem-se a asculta pulmonar, rotineiramente realizada  por médicos treinados. Seus pontos fortes são o baixo custo e o baixo tempo de resposta,  não demandando  o deslocamento de pacientes acamados para salas de exames. No entanto, o diagnóstico é fortemente dependente da experiência e capacidade auditiva do examinador. Neste contexto, surgiram estetoscópios eletrônicos de baixo custo que podem captar e registrar sinais que podem ser digitalmente processados com o objetivo de prover indíces quantitativos para orientar o diagnóstico, de tal forma a tornar o diagnóstico menos subjetivo e permitir a troca de informações entre especialistas. Esse trabalho propõe o aprimoramento com integração de funcionalidade adicionais a  um sistema de aquisição de sons respiratórios desenvolvido no LCS - UFSC. O módulo desenvolvido por \cite{willian}, - que antes contava com receptor e transmissor \textit{Bluetooth 5.0}, e um periférico de aquisição de sinais analógicos - foi aprimorado com a integração de sensor para registro da fase respiratória.
+O prematuro diagnóstico de enfermidades respiratórias pode representar uma redução significativa de óbitos. Dentre os métodos de diagnóstico, tem-se a asculta pulmonar, rotineiramente realizada  por médicos treinados. Seus pontos fortes são o baixo custo e o baixo tempo de resposta,  não demandando  o deslocamento de pacientes acamados para salas de exames. No entanto, o diagnóstico é fortemente dependente da experiência e capacidade auditiva do examinador. Neste contexto, surgiram estetoscópios eletrônicos de baixo custo que podem captar e registrar sinais que podem ser digitalmente processados com o objetivo de prover indíces quantitativos para orientar o diagnóstico, de tal forma a tornar o diagnóstico menos subjetivo e permitir a troca de informações entre especialistas. Esse trabalho propõe o aprimoramento com integração de funcionalidade adicionais a  um sistema de aquisição de sons respiratórios desenvolvido no LCS - UFSC. O módulo \cite{willian}, - que antes contava com receptor e transmissor \textit{Bluetooth 5.0}, e um periférico de aquisição de sinais analógicos - foi aprimorado com a integração de sensor para registro da fase respiratória.
 
 \section{Objetivo}
 
-Esse trabalho objetivou o aprimoramento de sistema de captação de sons respiratórios anteriormente desenvolvido, adequando-o para a aquisição de sons respiratórios em ambiente hospitalar.
+Este trabalho objetivou o aprimoramento de sistema de captação de sons respiratórios anteriormente desenvolvido, adequando-o para a aquisição de sons respiratórios em ambiente hospitalar.
 
 Como desenvolvimento adicional, acrescentou-se sensor para registrar deslocamento da parede torácica para identificar a fase respiratória. 
 
@@ -82,7 +81,7 @@ Como desenvolvimento adicional, acrescentou-se sensor para registrar deslocament
 
 A Figura 1 apresenta o diagrama em blocos do sistema desenvolvido em trabalho anterior \cite{willian}, no qual se incluiu um interface para acelerômetro e giroscópio.
 
-O sistema possui módulo para a captação de sons respiratórios (módulo 1), firmware dos módulos de amostragem, transmissão e recepção de dados (módulos 3 e 4), bem como de aplicativo para sistema operacional Windows (módulo 5). Este aplicativo objetiva a apresentação, armazenamento e reprodução das formas de onda amostradas. O aplicativo conta com programa escrito em Python (desenvolvido neste trabalho) que obtém os dados recebidos pela USB - via serial - do módulo de recepção dos dados, denominado \textbf{Módulo 4}, que são enviados pelo módulo de amostragem, ou \textbf{Módulo 3}.Cada um destes módulos é detalhado nas subseções seguintes.
+O sistema possui módulo para a captação de sons respiratórios (módulo 1), firmware dos módulos de amostragem, transmissão e recepção de dados (módulos 3 e 4), bem como de aplicativo para sistema operacional Windows (módulo 5). Este aplicativo objetiva a apresentação, armazenamento e reprodução das formas de onda amostradas. O aplicativo conta com programa escrito em Python (desenvolvido neste trabalho) que obtém os dados recebidos pelo USB - via serial - do módulo de recepção dos dados, denominado \textbf{Módulo 4}, que são enviados pelo módulo de amostragem, ou \textbf{Módulo 3}.Cada um destes módulos é detalhado nas subseções seguintes.
 
 O módulo 3 (Figura 1) controla a digitalização dos sinais do ADC via interface SPI, empacota as amostras e os transmite por radiofrequência (Bluetooth) para o módulo de recepção (módulo 4).  Estas etapas são realizadas por meio do kit de desenvolvimento BLE da Texas Instruments (CC2640R2F \texttt{LAUNCHPAD-XL Kit}). Este kit com protocolo Bluetooth 5 proporciona uma considerável redução no tempo de desenvolvimento da solução BLE, oferecendo taxa de transmissão e consumo de energia que atendem às necessidades do projeto. 
 
@@ -111,12 +110,12 @@ A figura a seguir mostra o esquemático funcional de blocos dos módulos 3 e 4, 
     \footnotesize{Fonte: Texas Instruments\textsuperscript{\textregistered}}
 \end{center}
 
-Observando o esquemático dos módulos, vemos que o mesmo conta com um processador ARM Cortex-M3 e ARM Cortex-M0. O primeiro serve de processador de propósito geral, e é extendido para os pinos de entrada e saída (\textit{I/O}) de cada placa. O segundo é um processador de propósito específico que contém código que controla o circuito de radiofrequência (\textit{RF}) responsável pela implementação do protocolo \textit{Bluetooth} da placa. 
+Como pode ser observado, ambos os módulos contam com dois processadores: ARM Cortex-M3 e ARM Cortex-M0. O primeiro atua como processador de propósito geral, supervisionando os pinos de entrada e saída (\textit{I/O}) de cada placa. O Cortex-M0 controla o circuito de radiofrequência (\textit{RF}) responsável pela implementação do protocolo \textit{Bluetooth} da placa. 
 
-Existe um protocolo de comunicação não-acessível pelo usuário da placa entre os dois processadores que serve para aquisição e envio de mensagens pelo Bluetooth. Fazemos uso, então, do \textit{Cortex-M3} para acessar e obter dados dos sensores ou periféricos. Estes, por sua vez, são enviados via para a segunda \textit{CC2640R2} usando a API da \textit{TI}.
+Existe um protocolo de comunicação entre os dois processadores (não acessível ao usuário da placa) que serve para transmissão de dados pelo Bluetooth. Fazemos uso, então, do \textit{Cortex-M3} para acessar e obter dados dos sensores ou periféricos. Estes, por sua vez, são enviados via para para o módulo de recepção (segundo kit\texttt{LAUCHPAD-XL}) usando a API da \textit{TI}.
  %TODO: Referência do documento da API da TI
 
- Algumas limitações de hardware ainda são realidade para essa tecnologia, fato que, por extensão, limita a escolha de placas de desenvolvimento no mercado. A tecnologia \textit{BLE 5.0}, por mais que o protocolo da presente versão tenha sido homologado em 2016, ainda não é totalmente adotada e nem amplamente utilizada por vários dispositivos. Visto que o ecossistema do projeto já estava baseado na \texttt{LAUCHPAD-XL}, o projeto ali se deu prosseguimento.
+ Algumas limitações de hardware ainda são realidade para essa tecnologia, fato que, por extensão, limita a escolha de placas de desenvolvimento no mercado. A tecnologia \textit{BLE 5.0}, embora o protocolo da presente versão tenha sido homologado em 2016, ainda não é totalmente adotada e nem amplamente utilizada por vários dispositivos. Visto que o ecossistema do projeto original já estava baseado nesta plataforma, o atual projeto continuou sendo desenvolvido na mesma.
 
  \subsection{Bluetooth}
  O \textit{Bluetooth 5.0} é uma tecnologia definida por um grupo de trabalho denominado \textit{Bluetooth Special Interest Group}\cite{SIG}. Nesse, se define um padrão de comunicação sem fio entre dois - ou mais - dispositivos numa banda de frequência normalmente utilizada para fins industriais, científicos e médicos. Originalmente, o Bluetooth foi criado para estabelecer um tipo de comunicação simples, serial, que já existia na forma de conexão via cabo entre dispositivos.
@@ -130,7 +129,7 @@ Existe um protocolo de comunicação não-acessível pelo usuário da placa entr
 %todo: citar aqui certinho a interface
 \subsection{Sistemas Operacionais em Tempo Real}
 
-Dado o problema de aquisição de dados em períodos de tempo rígido, existe a necessidade de uso de um Sistema Operacional em Tempo Real rodando em ambos módulos de amostragem e recepção dos dados. 
+Devido à necessidade de aquisição de diferentes sinais em intervalos de tempo regulares (de tal forma a atender ao teorema da amostragem), emprega-se Sistema Operacional em Tempo Real (a partir daqui denominado RTOS:  Real Time Operating System)  que é executado em ambos os módulos (transmissão e recepção). 
 
 De acordo com \cite{freertos} um Sistema Operacional em Tempo Real como um sistema que precisa saber o tempo de término quão mais exato de uma tarefa. Ou seja, um sistema em tempo real se carateriza pelo caráter determínistico. É ideal para aplicações onde ações externas precisam ser induzidas em intervalos de tempo regulares e extremamente corretos, como aquisição de som - no caso de estudo deste trabalho - ou o disparo de um air-bag.
 
@@ -175,23 +174,25 @@ Para garantir que cada tarefa possa ser executada dentro do \textit{time-slice},
 
 Tais sistemas são de suma importância para diversas aplicações na indústria e na ciência, sendo exaustivamente utilizado em diversos setores, como robótica, equipamentos biomédicos e quaisquer sistemas sensíveis a requerimentos de tempo. O compreendimento desses mecanismos são essenciais para a programação do ambos firmware dos módulos de recepção e amostragem.
 
-Ademais, a Texas Instruments disponibiliza juntamente com os \texttt{LAUCHPAD-XL} um Sistema Operacional em Tempo Real denominado \texttt{TIRTOS} juntamente com um kit de desenvolvimento (SDK), este último contendo um Middleware que possibilita a utilização do protocolo Bluetooth na programação das placas. Por estes, fazemos uso das facilidades do hardware de Bluetooth que existem nessa plataforma. A empresa, no entanto, não disponibiliza o código aberto de tal RTOS, mas sim uma API, que permite seu uso \cite{tirtosguide}.
+Ademais, a Texas Instruments disponibiliza juntamente com os \texttt{LAUCHPAD-XL} um Sistema Operacional em Tempo Real denominado \texttt{TIRTOS} juntamente com um kit de desenvolvimento (SDK), este último contendo um Middleware que possibilita a utilização do protocolo Bluetooth na programação das placas. Por estes, fazemos uso das facilidades do hardware de Bluetooth que existem nessa plataforma.
+
+O TIRTOS é um software capaz de gerenciar funções e tratadores de interrupção escritos em linguagem de programação, levando em consideração questões de tempo de execução e prioridade\cite{tirtosguide}. A empresa, no entanto, não disponibiliza o código do mesmo, mas sim uma \textit{API - Application Programming Interface}, que permite seu uso. Essa \textit{API} contém \textit{drivers}, ou camadas de abstração entre o código e o uso do hardware. Por exemplo, um driver de timer para controlar ciclos de tempo, ou um driver de periférico como \textit{SPI}.
 
 Entre essas APIs, existem drivers de periféricos (como SPI, timers e pinos de propósito geral), mecanismos de criação de tarefas e sistemas de gerenciamento de energia das placas.
 
 A empresa também disponibiliza uma \textit{IDE - Integrated Development Environment}, ou Ambiente Integrado de Desenvolvimento chamado \texttt{Code Composer}. Esse ambiente contém um editor de texto, compilador, depurador e várias ferramentas de análise em tempo real para diversas plataformas.
 
-Por esse ambiente, também são disponibilizados exemplos de aplicação que podem ser extendidos e modificados livremente, sob licença aberta. Um desses é o \textit{Simple Port Profile}, que é um simples firmware que conecta duas placas de desenvolvimento \textit{LAUNCHPAD-XL} e transfere bits numa configuração bidirecional entre as duas.
+Por este software também disponibilidade exemplos de aplicação que podem ser extendidos e modificados livremente, sob licença aberta. Um desses é o \textit{Simple Port Profile}, que é um firmware para conectar duas placas de desenvolvimento \textit{LAUNCHPAD-XL} de tal forma a transferir dados numa configuração bidirecional entre as duas.
 
-Esse exemplo foi compilado, estudado e analisado, visando compreendimento base do Sistema Operacional. O projeto também usa este exemplo de aplicação como projeto-base.
+Esse exemplo foi compilado, estudado e analisado, visando compreendimento base do Sistema Operacional. O projeto também usa esse exemplo de aplicação como projeto-base.
 
 \section{Desenvolvimento de firmware para testes de sinais simulados de aúdio}
 
-A partir disso, foram iniciados estudos sobre como o sistema de aquisição e transmissão criado por \cite{willian}. Durante este passo, notamos as limitações promovidas pela construção e configuração padrão do hardware da plataforma \textit{CC2640R2}. 
+A partir disso, foram iniciados estudos sobre como o sistema de aquisição e transmissão criado por \cite{willian}. Durante esse passo, notamos as limitações promovidas pela construção e configuração padrão do hardware da plataforma \textit{CC2640R2}. 
 
 O principal esforço se deu a trabalhar dentro de limitações extremas de memória volátil (memória não persistente). Com apenas 8\texttt{kb} de memória do tipo volátil, sendo que o Sistema Operacional em uso pode ocupar cerca de $25\%$ desse valor, fazendo com que inserção de rotinas novas necessitem de cuidado para evitar possíveis \textit{overflows}, ou estouro de memória por sua insuficiência.
 
-O sistema conta com um \textit{ADC} de 16 \textit{bits} de dois canais modelo \textit{LTC1867LCGN} da \textit{Linear Devices\textsuperscript{\textregistered}}. Esse se conecta a uma front-end desenvolvida por [trabalho que desenvolveu a frontend]
+O sistema conta com um \textit{ADC} de 16 \textit{bits} de dois canais modelo \textit{LTC1867LCGN} da \textit{Linear Devices\textsuperscript{\textregistered}}. Este se conecta a uma front-end desenvolvida por [trabalho que desenvolveu a frontend]
 
 \begin{center}
     \includegraphics[width=0.7\textwidth]{estetoscopio.jpg}\\
@@ -228,17 +229,38 @@ O sistema foi então testado com sinais alternados tanto gerados pelo próprio m
 
 \section{Desenvolvimento de Aplicativo para Notebook}
 
-O projeto original também conta com um aplicativo para Notebooks e Computadores Windows, que captura os pacotes transmitidos via Bluetooth pelo \textit{Client} do sistema por emulação de porta serial via USB. O primeiro problema foi a falta de documentação sobre o projeto, que não provinha de instruções de compilação. As bibliotecas utilizadas no projeto também eram de versões antigas, com diversos problemas de interoperabilidade. 
+O projeto original também conta com um aplicativo para Notebooks e Computadores Windows, que captura os pacotes transmitidos via Bluetooth pelo \textit{Client} do sistema por emulação de porta serial via USB. O primeiro problema foi a falta de documentação sobre o projeto, que não provinha de instruções de compilação. As bibliotecas utilizadas no projeto também eram de versões antigas, com diversos problemas de interoperabilidade.
 
-Ultrapassando o problema de compilação do projeto, percebemos que o mesmo utilizada a \textit{API} do próprio sistema Windows NT. O código utilizado para acesso ao periférico da porta serial emulada sobre USB era datado, não se comportando bem em novas versões do sistema Windows NT. Decidimos então criar um novo programa que capture as informações de quaisquer porta serial, com a necessidade de fácil manutenção e pouca modificação entre sistemas operacionais host. Dessa forma, foi escrito um programa na linguagem de programação Python que obtém os dados da porta serial e os salva para pós-processamento, que mostrou bom desempenho. Se necessário, métodos de pós-processamento podem ser programados de maneira não obtusa no programa, gerando os dados de maneira rápida.
+Ultrapassando o problema de compilação do projeto, percebemos que o mesmo utilizada a \textit{API} do próprio sistema Windows NT. O código utilizado para acesso ao periférico da porta serial emulada sobre USB era datado, não se comportando bem em novas versões do sistema Windows NT. Decidimos então criar um novo programa que capture as informações de quaisquer porta serial, com a necessidade de fácil manutenção e pouca modificação entre sistemas operacionais host. Dessa forma, foi escrito um programa na linguagem de programação \texttt{Python 3.8} que obtém os dados da porta serial e os salva para pós-processamento, que mostrou bom desempenho. Se necessário, métodos de pós-processamento podem ser programados de maneira não obtusa no programa, gerando os dados de maneira rápida.
+
+Outra vantagem desse novo programa é que o mesmo foi escrito com princípios de programação \textit{concorrente}. No programa anterior, caso o usuário estivesse fazendo aquisição de dados, o programa necessariamente teria terminar a aquisição para começar outra rotina ("travando" a tela do programa), não fazendo total uso da capacidade processamento disponível nos notebooks e microcomputadores modernos.
 
 \subsection{Código para atendimento de interrupção externa}
 
 Considerando que acessar o equipamento notebook que pode estar a alguns metros de distância do conjunto paciente, examinador e equipamento Bluetooth, surgiu a necessidade de um botão que dispare o programa de computador supracitado. 
 
-Uma modificação simples foi um algoritmo de \textit{poooling} - ou espera - de inicialização remota da gravação, em conjunto com uma modificação que não custou a já escassa memória de dados das placas. Aumentando o conforto do uso em pacientes com dificuldade de locomoção. 
+Para a implementação desse \textit{feature}, foi utilizada uma interrupção externa do \textit{client} (\textbf{Módulo 3}), disparada pelo botão esquerdo do mesmo (podendo ser reconfigurado para qualquer pino de propósito geral da placa). Como esse módulo fica perto do paciente, é possível realizar a operação sem movimentação até o notebook ou até o server (\textbf{Módulo 4}).
 
-Quando um botão é pressionado no Client, o mesmo envia uma curta mensagem de 8 bytes para o Server. O Server é conectado via cabo USB ao Notebook. Quando o Notebook detecta essa mensagem, ele envia uma mensagem ao Client pelo Server para que se comece a inicialização da aquisição e ao mesmo tempo começa a gravação dos dados recebidos pelo Server. 
+%inserir foto do botão esquerdo
+
+O fluxo de tratamento dessa interrupção para inicialização remota da gravação acontece da seguinte forma:
+
+\begin{enumerate}
+    \item O botão é pressionado no \textbf{Módulo 3} disparando uma interrupção externa.
+    \item Essa interrupção externa faz com que seu tratador envie uma série de dados pré-definidos chamados de \textit{código de operação} via bluetooth para o \textbf{Módulo 4}.
+    %figura da parte do código de operação
+    \item Esse código de operação é enviado pelo \textbf{Módulo 4} via USB ao notebook/microcomputador.
+    \item No código do aplicativo presente notebook/microcomputador existe um loop que faz \textit{polling} dos dados recebidos do \textbf{Módulo 4}. Dentro desse loop, existe um código de tratamento que localiza o código recebido no fluxo de dados.
+    %figura do loop no terminal
+    \item Esse código de tratamento levanta um evento que envia via \textbf{Módulo 4}, por bluetooth, um outro código de operação que é detectado pelo \textbf{Módulo 3}, inicializando a operação de transmissão e aquisição dos dados.
+    %figura da "aquisição inicializada"
+\end{enumerate}
+
+Esse método foi particularmente escolhido pois estabelece uma comunicação entre todas as partes do sistema, que pode ser utilizado para interrupções externas com outros fins, não somente a inicializar de aquisição remota dos dados. 
+
+Essa arquitetura de comunicação entre as partes do sistema também pode ser chamada de \textit{Shell}.
+
+
 
 \section{Aprimoramentos Realizados}
 
@@ -246,7 +268,7 @@ Uma das propostas concebidas pelo orientador foi a integração de um acelerôme
 
 O periférico de giroscópio e acelerômetro escolhido foi o \textit{MPU6050}. Seu baixo custo, alta precisão e plena disponibilidade oferecem um bom dispositivo. O \textit{MPU6050} é conta com 6 \textit{ADCs}, cada um de 16 \textit{bits}. Cada um desses \textit{ADCs} é responsável pela digitalização de um eixo do acelerômetro ou do giroscópio embarcados na \textit{breakout board}. Também oferece um filtro passa-baixas digitalmente programável, descartando a necessidade de pós-processamento e baixo consumo (em torno de \textit{3.6mA} de acordo com a fabricante). 
 
-A expansão incluiu o módulo de acelerômetro e giroscópio \textit{MPU6050}, o que possibilita a captação de sinais de posição em três dimensões com \textit{n}-graus de liberdade, onde \textit{n} é o número de sensores acelerômetro e giroscópio disponíveis no sistema. Claramente existe um limite no número de sensores dado as limitações de memória e hardware disponíveis no sistema. Em específico, o MPU6050 possui um sistema simples de endereçamento, que permite endereçar até dois chips usando apenas um periférico \textit{i\textsuperscript{2}c}. Como a plataforma atual possui dois desses periférico, é possível o endereçamento de até 4 combos de sensores de posição espacial. Qualquer pino pode ser reprogramado para funcionar como este protocolo.
+Nossa expansão incluiu o módulo de acelerômetro e giroscópio \textit{MPU6050}, o que possibilita a captação de sinais de posição em três dimensões com \textit{n}-graus de liberdade, onde \textit{n} é o número de sensores acelerômetro e giroscópio disponíveis no sistema. Claramente existe um limite no número de sensores dado as limitações de memória e hardware disponíveis no sistema. Em específico, o MPU6050 possui um sistema simples de endereçamento, que permite endereçar até dois chips usando apenas um periférico \textit{i\textsuperscript{2}c}. Como a plataforma atual possui dois desses periférico, é possível o endereçamento de até 4 combos de sensores de posição espacial. Qualquer pino pode ser reprogramado para funcionar como esse protocolo.
 
 Abaixo são listados os parâmetros de configuração \textit{i\textsuperscript{2}c}.
 
@@ -263,21 +285,25 @@ Abaixo são listados os parâmetros de configuração \textit{i\textsuperscript{
     \end{table}
     
 
-A metodologia de programação desse periférico se deu no desenvolvimento de um \hyperref[sec:driver]{\textit{driver}} do mesmo, que abstraí rotinas de baixo nível do periférico via uma \textit{API}. Como no programa escrito em Python para recebimento dos dados pela serial, optamos por uma forte filosofia de portabilidade, escrevendo a biblioteca de uma maneira portável e agnóstica à plataforma, podendo ser utilizada em outros microcontroladores e até outros projetos.
+A metodologia de programação desse periférico se deu no desenvolvimento de um {\textit{driver}} do mesmo, que abstraí rotinas de baixo nível do periférico via uma \textit{API}. Como no programa escrito em Python para recebimento dos dados pela serial, optamos por uma forte filosofia de portabilidade, escrevendo a biblioteca de uma maneira portável e agnóstica à plataforma, podendo ser utilizada em outros microcontroladores e até outros projetos.
 
 A taxa de aquisição desse sensor foi programada em função da taxa de aquisição do \textit{ADC}. A cada disparo do relógio, existe uma simples lógica de contador que divide esse clock afim de realizar a aquisição do acelerômetro + giroscópio. Dessa forma, a taxa de aquisição do acelerômetro + giroscópio nunca pode ser maior do que a do \textit{ADC}. De qualquer forma a taxa de 12MHz do \textit{ADC} é maior que a taxa de 1KHz do acelerômetro e 8kHz do giroscópio.
 
 
 \chapter{RESULTADOS E DISCUSSÃO}
-As condições para realização dos testes não foi propícia devido aos eventos externos ocorridos no ano de 2020, impossibilitando tanto contato quanto acesso aos equipamentos e profissionais necessários para continuar os trabalhos normalmente, dadas as questões sanitárias. De qualquer forma, houveram testes regulares em todas as partes do projeto, o que garante o funcionamento em ambiente de desenvolvimento.
+As condições para realização dos testes não foi propícia devido aos eventos externos ocorridos no ano de 2020, impossibilitando tanto contato quanto acesso aos equipamentos e profissionais necessários para continuar os trabalhos normalmente, dadas as questões sanitárias. De qualquer forma, houveram testes regulares em todas as partes do projeto, o que garante o funcionamento em ambiente de desenvolvimento. À exceção da aquisição de sinais de pacientes, todos os objetivos do projeto foram atingidos.
 
-Dado que a forma de conexão dos equipamentos e seu hardware continuaram constantes na realização deste trabalho, a distância de operação entre os equipamentos é, de forma aparente, 10 a 5 metros, a mesma realizada por \cite{willian}. 
+Dado que a forma de conexão dos equipamentos e seu hardware continuaram constantes na realização deste trabalho, a distância de operação entre os equipamentos é, de forma aparente, 10 a 5 metros, a mesma realizada por \cite{willian}.
 
 O sistema sofre ainda, com falta de estabilidade em certos pontos da conexão. Um aumento nos tempos de atualização do Bluetooth já feitos no trabalho anterior mostraram uma melhora, apesar disso, quedas ainda existem. Se cogita que uma das possíveis soluções seja portar o projeto para utilizar uma versão mais nova do firmware distribuído pela fabricante, que conta com possível correção de bugs e ofereça maior estabilidade.
 
 A falta de estabilidade geral do sistema também é ocasionada pela pouca memória volátil existente no sistema. O tamanho de pacote transmitido pelo protocolo sofreu aumento para acomodar os dados do giroscópio e acelerômetro, causando maior uso na memória volátil. 
 
 Como o firmware escrito para os módulos foi realizado em nível alto e portável dentro da linha suportada pela fabricante, e o driver do acelerômetro e giroscópio também foi escrito com este escopo de portabilidade em mente, se sugere o uso de uma plataforma com maior memória volátil disponível, ou plataforma que possa fazer acesso de memória externa a unidade do microprocessador. A organização interna do código e arquitetura geral do firmware foi desenvolvida em torno da pouca memória volátil disponível. Visando a manutenção do código, uma programação mais orientada e seguindo de forma mais próxima a filosofia de Sistemas Operacionais também se beneficiaria com o aumento da quantidade de memória.
+
+A principal motivação educacional nesse trabalho consistiu do estudo de ambientes de programação, plataformas profissionais de desenvolvimento, compiladores, e principalmente de Sistemas Operacionais em Tempo Real e programação paralela, que foi empregada em todos os níveis de desenvolvimento do sistema. Dentro de Sistemas Operacionais, a ênfase foi dada na depuração e resolução de problemas, essenciais no escopo prático de desenvolvimento.
+
+O estudo também incluiu uma sólida introdução as camadas do protocolo bluetooth, com exemplos práticos de como essa tecnologia pode ser empregada no desenvolvimento de sistemas embarcados, incluindo conhecimento de pontos fortes e limitações da tecnologia.
 
 
 \addcontentsline{toc}{chapter}{REFERÊNCIAS} 
