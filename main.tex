@@ -5,12 +5,12 @@
 \usepackage{graphicx}
 \usepackage{pdfpages}
 \usepackage{hyperref}
+\usepackage{listings}
 \usepackage{textcomp}
 \usepackage{float}
 \usepackage{tikz}
 \usetikzlibrary{shapes.geometric}
-
-\usepackage{listings}
+\usepackage[utf8]{inputenc}
 \usepackage{indentfirst} %\section or \chapter by default don't indent the first paragraph for some absurd reason!
 
 \usepackage[style=abnt]{biblatex}
@@ -52,15 +52,13 @@
 
 \chapter{Resumo}
 
-Entre os diversos métodos de diagnóstico de enfermidades pulmonares, a asculta de sons respiratórios sobre o toráx tem como vantagens o fato de ser  não invasivo e ter baixo custo 
-%adicionar referência
-cite{carvalho}. No entanto, devido à fatores técnicos como qualidade do estetoscópio, acurácia auditiva do examinador e atenuação do som pelo toráx do paciente, além da subjetividade pelo fator humano envolvido no exame, há esforços para tornar este método mais robusto, proporcionando um diagnóstico mais confiável. Este trabalho tem como objetivo aperfeiçoar estetoscópio eletrônico desenvolvido neste laboratório que digitaliza e transmite sons respiratórios, bem como, registra o deslocamento do tórax para identificação da fase respiratória. O sistema consiste-se de dois módulos, transmissor e receptor, que respectivamente amostram e recebem o som em um microcomputador pessoal para armazenar os sons captados de pacientes. O protocolo de transmissão utilizado é o \textit{Bluetooth 5.0}. Neste trabalho, são reportados o estudo, teste e o aprimoramento do sistema.
+Entre os diversos métodos de diagnóstico de enfermidades pulmonares, a asculta de sons respiratórios sobre o toráx tem como vantagens o fato de ser  não invasivo e ter baixo custo. No entanto, devido à fatores técnicos como qualidade do estetoscópio, acurácia auditiva do examinador e atenuação do som pelo toráx do paciente, além da subjetividade pelo fator humano envolvido no exame, há esforços para tornar este método mais robusto, proporcionando um diagnóstico mais confiável. Este trabalho tem como objetivo aperfeiçoar estetoscópio eletrônico desenvolvido neste laboratório que digitaliza e transmite sons respiratórios, bem como, registra o deslocamento do tórax para identificação da fase respiratória. O sistema consiste-se de dois módulos, transmissor e receptor, que respectivamente amostram e recebem o som em um microcomputador pessoal para armazenar os sons captados de pacientes. O protocolo de transmissão utilizado é o \textit{Bluetooth 5.0}. Neste trabalho, são reportados o estudo, teste e o aprimoramento do sistema.
 
 Palavras-chave: Instrumentação médica. Sistema respiratório. Sons respiratórios. Estetoscópio Eletrônico. Processamento Digital de Sinais.
 
 \chapter{Introdução}
 
-O prematuro diagnóstico de enfermidades respiratórias pode representar uma redução significativa de óbitos. Dentre os métodos de diagnóstico, tem-se a asculta pulmonar, rotineiramente realizada  por médicos treinados. Seus pontos fortes são o baixo custo e o baixo tempo de resposta,  não demandando  o deslocamento de pacientes acamados para salas de exames. No entanto, o diagnóstico é fortemente dependente da experiência e capacidade auditiva do examinador. Neste contexto, surgiram estetoscópios eletrônicos de baixo custo que podem captar e registrar sinais que podem ser digitalmente processados com o objetivo de prover indíces quantitativos para orientar o diagnóstico, de tal forma a tornar o diagnóstico menos subjetivo e permitir a troca de informações entre especialistas. Esse trabalho propõe o aprimoramento com integração de funcionalidade adicionais a  um sistema de aquisição de sons respiratórios desenvolvido no LCS - UFSC. O módulo \cite{willian}, - que antes contava com receptor e transmissor \textit{Bluetooth 5.0}, e um periférico de aquisição de sinais analógicos - foi aprimorado com a integração de sensor para registro da fase respiratória.
+O prematuro diagnóstico de enfermidades respiratórias pode representar uma redução significativa de óbitos. Dentre os métodos de diagnóstico, tem-se a asculta pulmonar, rotineiramente realizada  por médicos treinados. Seus pontos fortes são o baixo custo e o baixo tempo de resposta,  não demandando  o deslocamento de pacientes acamados para salas de exames\cite{carvalho}. No entanto, o diagnóstico é fortemente dependente da experiência e capacidade auditiva do examinador. Neste contexto, surgiram estetoscópios eletrônicos de baixo custo que podem captar e registrar sinais que podem ser digitalmente processados com o objetivo de prover indíces quantitativos para orientar o diagnóstico, de tal forma a tornar o diagnóstico menos subjetivo e permitir a troca de informações entre especialistas. Esse trabalho propõe o aprimoramento com integração de funcionalidade adicionais a  um sistema de aquisição de sons respiratórios desenvolvido no LCS - UFSC. O módulo \cite{willian}, - que antes contava com receptor e transmissor \textit{Bluetooth 5.0}, e um periférico de aquisição de sinais analógicos - foi aprimorado com a integração de sensor para registro da fase respiratória.
 
 \section{Objetivo}
 
@@ -74,10 +72,11 @@ Como desenvolvimento adicional, acrescentou-se sensor para registrar deslocament
 \section{Introdução}
 
 %TODO: Consertar essa figura. Não fica bonito ter a figura sem texto antes, mas ela não cabe no restante da página. Se deixar muito pequena fica pouco legível.
-\begin{center}
+\begin{figure}
+    \centering
     \includegraphics[width=0.9\textwidth]{esquematico_novo.png}\\
-    \footnotesize{Fonte: O autor.}
-\end{center}
+    \caption{Fonte: O autor.}
+\end{figure}
 
 A Figura 1 apresenta o diagrama em blocos do sistema desenvolvido em trabalho anterior \cite{willian}, no qual se incluiu um interface para acelerômetro e giroscópio.
 
@@ -98,17 +97,19 @@ Para melhor compreensão do sistema existente, este trabalho foi iniciado com o 
 
 Ambos módulos de Amostragem e Recepção (módulos 3 e 4, respectivamente na figura 1, seção 3.1) dos dados são placas de desenvolvimento da \textit{Texas Instruments}\textsuperscript{\textregistered}, codenome \texttt{LAUNCHPAD-XL-XL} contendo o chip \textit{CC2640R2} e que suportam a tecnologia \textit{BLE 5.0}, \textit{Bluetooth Low Energy 5.0}.
 
-\begin{center}
+\begin{figure}
+    \centering
     \includegraphics[width=0.4\textwidth]{cc2640r2.jpg}\\
-    \footnotesize{Fonte: Texas Instruments\textsuperscript{\textregistered}}
-\end{center}
+    \caption{Fonte: Texas Instruments\textsuperscript{\textregistered}}
+\end{figure}
 
 A figura a seguir mostra o esquemático funcional de blocos dos módulos 3 e 4, que como mencionado na introdução deste trabalho, são plataformas de desenvolvimento \textit{CC2640R2}.
 
-\begin{center}
+\begin{figure}
+    \centering
     \includegraphics[width=2.6\textwidth]{soc.jpg}\\
-    \footnotesize{Fonte: Texas Instruments\textsuperscript{\textregistered}}
-\end{center}
+    \caption{Fonte: Texas Instruments\textsuperscript{\textregistered}}
+\end{figure}
 
 Como pode ser observado, ambos os módulos contam com dois processadores: ARM Cortex-M3 e ARM Cortex-M0. O primeiro atua como processador de propósito geral, supervisionando os pinos de entrada e saída (\textit{I/O}) de cada placa. O Cortex-M0 controla o circuito de radiofrequência (\textit{RF}) responsável pela implementação do protocolo \textit{Bluetooth} da placa. 
 
@@ -146,10 +147,11 @@ A principal estrutura de dados de um Sistema Operacional é o de \textit{Task}, 
 
 Na figura abaixo é possível observar a vida de execução de uma tarefa.
 
-\begin{center}
+\begin{figure}
+    \centering
     \includegraphics[width=1\textwidth]{task_execution.PNG}\\
-    \footnotesize{Fonte: Texas Instruments}
-\end{center}
+    \caption{Fonte: Texas Instruments}
+\end{figure}
 
 Existem três blocos conceituais dentro de um Sistema Operacional: O \textit{Kernel}, \textit{User Space} e os \textit{Middleware}. Essa divisão se objetiva por segregar a memória, afim de manter segurança na execução de aplicações \cite{tanenbaum}.
 
@@ -160,7 +162,7 @@ O \textit{User Space} carateriza a parte da memória onde programas de usuário 
 \begin{figure}[H]
     \centering
     \includegraphics[scale = 0.15]{os_esquematico.png}
-    \caption{Fonte: O Autor}
+    \caption{Fonte: O autor}
 \end{figure} 
 
 O programa que realiza a funcionalidade de \textit{quasi-}paralelismo num RTOS é o escalonador, que reside no Kernel. A função principal do escalonador é criar uma fila das tarefas disponíveis escritas pelo programador e garantir que estas possam ser executadas dentro de um tempo limite chamado de \textit{time-slice} (na ordem de microssegundos). O escalonador pode ser observado, essencialmente, como um algoritmo de organização que minimiza o tempo de execução levando em consideração os metadados de cada tarefa\cite{tanenbaum}.
@@ -194,10 +196,11 @@ O principal esforço se deu a trabalhar dentro de limitações extremas de memó
 
 O sistema conta com um \textit{ADC} de 16 \textit{bits} de dois canais modelo \textit{LTC1867LCGN} da \textit{Linear Devices\textsuperscript{\textregistered}}. Este se conecta a uma front-end desenvolvida por [trabalho que desenvolveu a frontend]
 
-\begin{center}
+\begin{figure}
+    \centering
     \includegraphics[width=0.7\textwidth]{estetoscopio.jpg}\\
-    \footnotesize{Fonte: \cite{willian}}
-\end{center}
+    \caption{Fonte: \cite{willian}}
+\end{figure}
 
 O projeto pode ser utilizado para se obter sinais de  com pouca interferência e distúrbio para pacientes. Os sinais podem, \textit{a posteriori} ser processados e analisados por técnicas específicas de processamento de sinal. A interface também pode ser vista como um estetoscópio eletrônico de baixo custo e performance comparável aos dispositivos existentes no mercado, que são de código fechado e valor proibitivo para uma grande parcela de possíveis aplicações.
 
@@ -218,6 +221,7 @@ A comunicação \textit{ADC} \textrightarrow \textit{CC2640} é realizada pelo p
             CPHA (Clock Phase)           & 0 \\ \hline
             Modo                         & Callback \\ \hline
         \end{tabular}
+        \caption{Parâmetros de configuração \textit{SPI}}
     \end{table}
             
 Foram corrigidos avisos gerados por conversões digitais implícitas que existiam nos valores amostrados do \textit{ADC} quando levadas ao buffer de transmissão utilizado pelo projeto.
@@ -235,6 +239,10 @@ Ultrapassando o problema de compilação do projeto, percebemos que o mesmo util
 
 Outra vantagem desse novo programa é que o mesmo foi escrito com princípios de programação \textit{concorrente}. No programa anterior, caso o usuário estivesse fazendo aquisição de dados, o programa necessariamente teria terminar a aquisição para começar outra rotina ("travando" a tela do programa), não fazendo total uso da capacidade processamento disponível nos notebooks e microcomputadores modernos.
 
+Essa capacidade fez uso da biblioteca \texttt{asyncio}\cite{asyncio}, de Python, que implementa código concorrente baseado em \texttt{async/await}.
+
+Esse programa também define um tratador de códigos de operação e uma interface estilo \textit{Shell} entre as partes integrantes do sistema. Via códigos predefinidos, se pode ativar operações em quaisquer uma das placas. Esse método será utilizado na implementação da inicialização da aquisição de sinais via interrupção externa (próxima seção).
+
 \subsection{Código para atendimento de interrupção externa}
 
 Considerando que acessar o equipamento notebook que pode estar a alguns metros de distância do conjunto paciente, examinador e equipamento Bluetooth, surgiu a necessidade de um botão que dispare o programa de computador supracitado. 
@@ -248,40 +256,49 @@ O fluxo de tratamento dessa interrupção para inicialização remota da gravaç
 \begin{enumerate}
     \item O botão é pressionado no \textbf{Módulo 3} disparando uma interrupção externa.
     \item Essa interrupção externa faz com que seu tratador envie uma série de dados pré-definidos chamados de \textit{código de operação} via bluetooth para o \textbf{Módulo 4}.
-    %figura da parte do código de operação
     \item Esse código de operação é enviado pelo \textbf{Módulo 4} via USB ao notebook/microcomputador.
     \item No código do aplicativo presente notebook/microcomputador existe um loop que faz \textit{polling} dos dados recebidos do \textbf{Módulo 4}. Dentro desse loop, existe um código de tratamento que localiza o código recebido no fluxo de dados.
-    %figura do loop no terminal
     \item Esse código de tratamento levanta um evento que envia via \textbf{Módulo 4}, por bluetooth, um outro código de operação que é detectado pelo \textbf{Módulo 3}, inicializando a operação de transmissão e aquisição dos dados.
-    %figura da "aquisição inicializada"
 \end{enumerate}
 
-Esse método foi particularmente escolhido pois estabelece uma comunicação entre todas as partes do sistema, que pode ser utilizado para interrupções externas com outros fins, não somente a inicializar de aquisição remota dos dados. 
+O código abaixo é uma cópia exata do console do aplicativo desenvolvido após o botão esquerdo ser pressionado:
 
-Essa arquitetura de comunicação entre as partes do sistema também pode ser chamada de \textit{Shell}.
-
-
+\begin{verbatim}
+    $ python .\serial_reader.py
+    $ Iniciando shell do estetoscópio
+    $ >
+    $ Código de operação recebido
+    $ Inicializando aquisição e salvando dados
+    $ Aquisição completa
+\end{verbatim}
 
 \section{Aprimoramentos Realizados}
 
 Uma das propostas concebidas pelo orientador foi a integração de um acelerômetro e giroscópio, dispositivo que mede aceleração e posição absoluta, de forma a obter dados espaciais do tórax do paciente. A partir dessa proposta foi elaborado uma interface parar aquisição de dados de pequenos sensores que contém tanto acelerômetro quando giroscópio.
 
-O periférico de giroscópio e acelerômetro escolhido foi o \textit{MPU6050}. Seu baixo custo, alta precisão e plena disponibilidade oferecem um bom dispositivo. O \textit{MPU6050} é conta com 6 \textit{ADCs}, cada um de 16 \textit{bits}. Cada um desses \textit{ADCs} é responsável pela digitalização de um eixo do acelerômetro ou do giroscópio embarcados na \textit{breakout board}. Também oferece um filtro passa-baixas digitalmente programável, descartando a necessidade de pós-processamento e baixo consumo (em torno de \textit{3.6mA} de acordo com a fabricante). 
+O periférico de giroscópio e acelerômetro escolhido foi o \texttt{MPU6050}. Seu baixo custo, alta precisão e plena disponibilidade oferecem um bom dispositivo. O \texttt{MPU6050} é conta com 6 \textit{ADCs}, cada um de 16 \textit{bits}. Cada um desses \textit{ADCs} é responsável pela digitalização de um eixo do acelerômetro ou do giroscópio embarcados na \textit{breakout board}. Também oferece um filtro passa-baixas digitalmente programável, descartando a necessidade de pós-processamento e baixo consumo (em torno de \textit{3.6mA} de acordo com a fabricante). 
 
-Nossa expansão incluiu o módulo de acelerômetro e giroscópio \textit{MPU6050}, o que possibilita a captação de sinais de posição em três dimensões com \textit{n}-graus de liberdade, onde \textit{n} é o número de sensores acelerômetro e giroscópio disponíveis no sistema. Claramente existe um limite no número de sensores dado as limitações de memória e hardware disponíveis no sistema. Em específico, o MPU6050 possui um sistema simples de endereçamento, que permite endereçar até dois chips usando apenas um periférico \textit{i\textsuperscript{2}c}. Como a plataforma atual possui dois desses periférico, é possível o endereçamento de até 4 combos de sensores de posição espacial. Qualquer pino pode ser reprogramado para funcionar como esse protocolo.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.4]{MPU6050_pic.png}
+    \caption{\texttt{MPU6050} \textit{breakout board}. Fonte: www.easytronics.com.br}
+\end{figure}
+
+O \texttt{MPU6050} possui um sistema simples de endereçamento, que permite endereçar até dois chips usando apenas um periférico \textit{i\textsuperscript{2}c}. Como a plataforma atual possui dois desses periférico, é possível o endereçamento de até 4 combos de sensores de posição espacial. Qualquer pino pode ser reprogramado para funcionar como esse protocolo.
 
 Abaixo são listados os parâmetros de configuração \textit{i\textsuperscript{2}c}.
 
-    \begin{table}[]
+    \begin{table}[H]
         \centering
         \begin{tabular}{|l|l|}
             \hline
             \textbf{Parâmetro}                    & \textbf{Valor} \\ \hline
             Modo de comunicação CC2640R2 & Mestre \\ \hline
-            Modo de comunicação MPU6050  & Escravo \\ \hline
+            Modo de comunicação \texttt{MPU6050}  & Escravo \\ \hline
             Taxa do clock                & 400kHz \\ \hline
             Tamanho da Amostra           & 16 bits \\ \hline
         \end{tabular}
+        \caption{Parâmetros de configuração \textit{i\textsuperscript{2}c}}
     \end{table}
     
 
